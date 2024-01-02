@@ -10,25 +10,26 @@ root.title("Saldainiai")
 
 root.attributes('-fullscreen', True)
 root.attributes("-type", "splash")
+# root.configure(bg="dark gray")
 
 fortuna_img = Image.open("fortuna.png")
 # fortuna_img = fortuna_img.resize((250, 250))
 fortuna_img = ImageTk.PhotoImage(fortuna_img)
 
 ananasas_img = Image.open("ananasas.png")
-ananasas_img = ananasas_img.resize((300, 300))
+ananasas_img = ananasas_img.resize((150, 150))
 ananasas_img = ImageTk.PhotoImage(ananasas_img)
 
 ku_img = Image.open("ku.png")
-ku_img = ku_img.resize((400, 250))
+ku_img = ku_img.resize((200, 125))
 ku_img = ImageTk.PhotoImage(ku_img)
 
 conexus_img = Image.open("conexus.png")
-conexus_img = conexus_img.resize((400, 250))
+conexus_img = conexus_img.resize((200, 125))
 conexus_img = ImageTk.PhotoImage(conexus_img)
 
 fondas_img = Image.open("fondas.png")
-fondas_img = fondas_img.resize((200, 100))
+fondas_img = fondas_img.resize((100, 50))
 fondas_img = ImageTk.PhotoImage(fondas_img)
 
 screen_width = root.winfo_screenwidth()
@@ -102,6 +103,10 @@ def show_main_interface():
 
     ananasu_button = tk.Button(frame, command=lambda: pick_candy(ANANASAS), width=300, height=200, image=ananasas_img, borderwidth=0, relief="solid")
     ananasu_button.pack(side=tk.RIGHT, padx=10)
+    
+    # Add an exit button with an X symbol
+    exit_button = tk.Button(frame, text="X", font=("Helvetica", 20), command=root.destroy)
+    exit_button.place(x=-10, y=-10)  # Adjust the position as needed
 
 show_main_interface()
 root.mainloop()
