@@ -9,6 +9,7 @@ root = tk.Tk()
 root.title("Saldainiai")
 
 root.attributes('-fullscreen', True)
+root.attributes("-type", "splash")
 
 fortuna_img = Image.open("fortuna.png")
 # fortuna_img = fortuna_img.resize((250, 250))
@@ -30,15 +31,15 @@ fondas_img = Image.open("fondas.png")
 fondas_img = fondas_img.resize((200, 100))
 fondas_img = ImageTk.PhotoImage(fondas_img)
 
-# screen_width = root.winfo_screenwidth()
-# screen_height = root.winfo_screenheight()
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
 
-# window_width = 1920
-# window_height = 1080
-# x_position = (screen_width - window_width) // 2
-# y_position = (screen_height - window_height) // 2
+window_width = 1024
+window_height = 600
+x_position = (screen_width - window_width) // 2
+y_position = (screen_height - window_height) // 2
 
-# root.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
+root.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
 
 logos = tk.Frame(root)
 logos.pack(expand=True)
