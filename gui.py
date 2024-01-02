@@ -10,6 +10,7 @@ root.title("Saldainiai")
 
 root.attributes('-fullscreen', True)
 root.attributes("-type", "splash")
+# root.configure(bg="dark gray")
 
 fortuna_img = Image.open("fortuna.png")
 # fortuna_img = fortuna_img.resize((250, 250))
@@ -102,6 +103,10 @@ def show_main_interface():
 
     ananasu_button = tk.Button(frame, command=lambda: pick_candy(ANANASAS), width=300, height=200, image=ananasas_img, borderwidth=0, relief="solid")
     ananasu_button.pack(side=tk.RIGHT, padx=10)
+    
+    # Add an exit button with an X symbol
+    exit_button = tk.Button(frame, text="X", font=("Helvetica", 20), command=root.destroy)
+    exit_button.place(x=10, y=10)  # Adjust the position as needed
 
 show_main_interface()
 root.mainloop()
