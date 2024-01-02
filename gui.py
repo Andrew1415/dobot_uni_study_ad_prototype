@@ -11,13 +11,6 @@ root.title("Saldainiai")
 root.attributes('-fullscreen', True)
 root.attributes("-type", "splash")
 
-root.bind_class("Entry", "<1>", lambda ev: ev.widget.focus_force())
-
-entry = tk.Entry(root)
-entry.pack()
-tk.Button(root, text="Close", command=root.destroy).pack()
-root.mainloop()
-
 fortuna_img = Image.open("fortuna.png")
 # fortuna_img = fortuna_img.resize((250, 250))
 fortuna_img = ImageTk.PhotoImage(fortuna_img)
