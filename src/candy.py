@@ -8,6 +8,8 @@ _FORTUNA_PIN = 37
 _ANANASAS_PIN = 35
 _READY_PIN = 33
 
+CHECK_DELAY = 1
+
 def setup_gpio():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(_FORTUNA_PIN, GPIO.OUT)
@@ -22,31 +24,18 @@ def request_candy(candy, ready_callback):
         req_pin = _ANANASAS_PIN
     else:
         raise ValueError("Invalid candy")
-    
+
+    print(f"Requesting candy {candy}...")
     GPIO.output(req_pin, GPIO.high)
-    
-    led_pin = 37
 
-    try:
-        # Blink the LED 5 times
-        while True:
-            # Turn on the LED
-            GPIO.output(led_pin, GPIO.HIGH)
-            time.sleep(1)  # Wait for 1 second
+    while True:
+        print("Waiting for robot input...")
+        res = GPIO.input(_READY_PIN)
+        if res:
+            print("Robot signal received!")
+            ready_callback()
+            return
 
-            # Turn off the LED
-            GPIO.output(led_pin, GPIO.LOW)
-            time.sleep(1)  # Wait for 1 second
-
-    except KeyboardInterrupt:
-        pass
-
-    finally:
-        # Cleanup GPIO on script exit
-        GPIO.cleanup()
-        print(f"Requesting candy {candy}")
-
-def is_candy_ready():
-    return False
+        time.sleep(CHECK_DELAY)
 
 setup_gpio()
