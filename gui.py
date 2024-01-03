@@ -7,7 +7,7 @@ FORTUNA = "fortuna"
 ANANASAS = "ananasas"
 
 def on_exit():
-    result = messagebox.askquestion("Exit", "Are you sure you want to exit?")
+    result = messagebox.askquestion("Exit", "Ar tikrai norite išeiti?")
     if result == "yes":
         root.destroy()
 
@@ -23,7 +23,7 @@ fortuna_img = Image.open("fortuna.png")
 fortuna_img = ImageTk.PhotoImage(fortuna_img)
 
 ananasas_img = Image.open("ananasas.png")
-ananasas_img = ananasas_img.resize((150, 150))
+ananasas_img = ananasas_img.resize((300, 300))
 ananasas_img = ImageTk.PhotoImage(ananasas_img)
 
 ku_img = Image.open("ku.png")
@@ -110,8 +110,8 @@ def show_main_interface():
     ananasu_button = tk.Button(frame, command=lambda: pick_candy(ANANASAS), width=300, height=200, image=ananasas_img, borderwidth=0, relief="solid")
     ananasu_button.pack(side=tk.RIGHT, padx=10)
     
-    exit_button = tk.Button(frame, text="X", font=("Helvetica", 20), command=on_exit)
-    exit_button.place(x=window_width-40, y=10)
+    exit_button = tk.Button(root, text="X", font=("Helvetica", 20), command=on_exit)
+    exit_button.place(relx=1.0, x=-10, y=10, anchor="ne")
 
 show_main_interface()
 root.mainloop()
