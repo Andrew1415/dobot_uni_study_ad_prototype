@@ -93,6 +93,7 @@ def catch_candy(candy):
     frame.after(6000, lambda: show_count(1))
     frame.after(10000, show_main_interface)
 
+# Create the main window
 def show_main_interface():
     clear_frame()
 
