@@ -26,7 +26,7 @@ def request_candy(candy, ready_callback):
         raise ValueError("Invalid candy")
 
     print(f"Requesting candy {candy}...")
-    GPIO.output(req_pin, GPIO.high)
+    GPIO.output(req_pin, GPIO.HIGH)
 
     while True:
         print("Waiting for robot input...")
