@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Saldainiai
+Comment=Gauk Saldaini
+Exec=/usr/bin/firefox %u
+Terminal=false
+X-MultipleArgs=false
+Type=Application
