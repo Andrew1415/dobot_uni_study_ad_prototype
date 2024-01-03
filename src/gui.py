@@ -14,7 +14,6 @@ root.title("Saldainiai")
 
 root.attributes('-fullscreen', True)
 root.attributes("-type", "splash")
-# root.configure(bg="dark gray")
 
 fortuna_img = Image.open("src/img/fortuna.png")
 fortuna_img = fortuna_img.resize((250, 200))
@@ -94,8 +93,6 @@ def catch_candy(candy):
     frame.after(6000, lambda: show_count(1))
     frame.after(10000, show_main_interface)
 
-
-# Create the main window
 def show_main_interface():
     clear_frame()
 
