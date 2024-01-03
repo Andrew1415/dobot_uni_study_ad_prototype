@@ -1,5 +1,5 @@
 #!/bin/bash
 
-CUR_DIR = $(basename "$0")
+root_dir=$(basename "$0")
 
-echo "basename: [$CUR_DIR]"
+echo "basename: [$root_dir]"
