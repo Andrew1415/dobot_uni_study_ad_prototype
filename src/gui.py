@@ -68,7 +68,7 @@ def clear_frame():
 def pick_candy(candy):
     clear_frame()
 
-    label = tk.Label(frame, text="Saldainis imamas...", font=("Helvetica", 25))
+    label = tk.Label(frame, text="Saldainis imamas...", font=("Rando", 25))
     label.pack()
 
     frame.after(3000, lambda: catch_candy(candy))
@@ -81,10 +81,10 @@ def pick_candy(candy):
 def catch_candy(candy):
     clear_frame()
 
-    label = tk.Label(frame, text="Gaudykite saldainį!", font=("Helvetica", 25))
+    label = tk.Label(frame, text="Gaudykite saldainį!", font=("Rando", 25))
     label.pack(pady=20)
 
-    countdown = tk.Label(frame, text=3, font=("Helvetica", 25))
+    countdown = tk.Label(frame, text=3, font=("Rando", 25))
 
     def show_count(count):
         countdown.config(text=count)
@@ -99,7 +99,7 @@ def catch_candy(candy):
 def show_main_interface():
     clear_frame()
 
-    question_label = tk.Label(frame, text="Kokio saldainio norite?", font=("Helvetica", 30))
+    question_label = tk.Label(frame, text="Kokio saldainio norite?", font=("Rando", 30))
     question_label.pack(pady=20)
 
     fortune_button = tk.Button(frame, command=lambda: pick_candy(FORTUNA), width=300, height=200, image=fortuna_img, borderwidth=0, relief="solid")
@@ -108,7 +108,7 @@ def show_main_interface():
     ananasu_button = tk.Button(frame, command=lambda: pick_candy(ANANASAS), width=300, height=200, image=ananasas_img, borderwidth=0, relief="solid")
     ananasu_button.pack(side=tk.RIGHT, padx=10)
     
-    exit_button = tk.Button(root, text="X", font=("Helvetica", 20), command=on_exit)
+    exit_button = tk.Button(root, text="X", font=("Rando", 20), command=on_exit)
     exit_button.place(relx=1.0, x=-10, y=10, anchor="ne")
 
 show_main_interface()
