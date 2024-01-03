@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 
 led_pin = 37
-led_pin2 = 35
+led_pin2 = 31
 led_pin3 = 33
 GPIO.setmode(GPIO.BOARD)
 
