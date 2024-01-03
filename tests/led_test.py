@@ -2,20 +2,31 @@ import RPi.GPIO as GPIO
 import time
 
 led_pin = 37
+led_pin2 = 35
+led_pin3 = 33
 GPIO.setmode(GPIO.BOARD)
 
 GPIO.setup(led_pin, GPIO.OUT)
+GPIO.setup(led_pin2, GPIO.OUT)
+GPIO.setup(led_pin3, GPIO.OUT)
+
+DELAY = 2
+
+def switch_led(pin):
+    print(f"Turning on pin {pin}")
+    GPIO.output(pin, GPIO.HIGH)
+    time.sleep(DELAY)  # Wait for 1 second
+
+    print(f"Turning off pin {pin}")
+    # Turn off the LED
+    GPIO.output(pin, GPIO.LOW)
+    time.sleep(DELAY)  # Wait for 1 second
 
 try:
-    # Blink the LED 5 times
     while True:
-        # Turn on the LED
-        GPIO.output(led_pin, GPIO.HIGH)
-        time.sleep(1)  # Wait for 1 second
-
-        # Turn off the LED
-        GPIO.output(led_pin, GPIO.LOW)
-        time.sleep(1)  # Wait for 1 second
+        switch_led(led_pin)
+        switch_led(led_pin2)
+        switch_led(led_pin3)
 
 except KeyboardInterrupt:
     pass
