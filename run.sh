@@ -1,5 +1,5 @@
 #!/bin/bash
 
-root_dir=$(basename "$0")
+root_dir=$(dirname "$0")
 
 echo "basename: [$root_dir]"
