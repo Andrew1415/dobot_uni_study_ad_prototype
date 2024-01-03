@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import time
+from threading import Thread
 
 FORTUNA = "fortuna"
 ANANASAS = "ananasas"
@@ -7,6 +8,7 @@ ANANASAS = "ananasas"
 _FORTUNA_PIN = 37
 _ANANASAS_PIN = 35
 _READY_PIN = 33
+_TEST_PIN = 31
 
 CHECK_DELAY = 1
 
@@ -15,9 +17,13 @@ def setup_gpio():
     GPIO.setup(_FORTUNA_PIN, GPIO.OUT)
     GPIO.setup(_ANANASAS_PIN, GPIO.OUT)
     GPIO.setup(_READY_PIN, GPIO.IN)
+    GPIO.setup(_TEST_PIN, GPIO.OUT)
+    GPIO.output(_TEST_PIN, GPIO.LOW)
 
 
 def request_candy(candy, ready_callback):
+    print(f"Requesting candy {candy}...")
+
     if candy == FORTUNA:
         req_pin = _FORTUNA_PIN
     elif candy == ANANASAS:
@@ -25,7 +31,11 @@ def request_candy(candy, ready_callback):
     else:
         raise ValueError("Invalid candy")
 
-    print(f"Requesting candy {candy}...")
+
+    t1 = Thread(target=_wait_candy)
+    t1.start()
+
+def _wait_candy(req_pin, ready_callback):
     GPIO.output(req_pin, GPIO.HIGH)
 
     while True:
@@ -34,8 +44,10 @@ def request_candy(candy, ready_callback):
         if res:
             print("Robot signal received!")
             ready_callback()
-            return
+            break
 
         time.sleep(CHECK_DELAY)
+
+    GPIO.output(req_pin, GPIO.LOW)
 
 setup_gpio()
