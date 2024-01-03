@@ -66,11 +66,11 @@ def clear_frame():
 
 def pick_candy(candy):
     clear_frame()
-    
-    request_candy(candy, lambda: catch_candy(candy))
 
     label = tk.Label(frame, text="Saldainis imamas...", font=("Rando", 25))
     label.pack()
+    
+    request_candy(candy, lambda: catch_candy(candy))
 
 def catch_candy(candy):
     clear_frame()
