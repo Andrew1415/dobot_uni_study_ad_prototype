@@ -14,26 +14,25 @@ root.title("Saldainiai")
 
 root.attributes('-fullscreen', True)
 root.attributes("-type", "splash")
-# root.configure(bg="dark gray")
 
 fortuna_img = Image.open("src/img/fortuna.png")
-# fortuna_img = fortuna_img.resize((250, 250))
+fortuna_img = fortuna_img.resize((250, 200))
 fortuna_img = ImageTk.PhotoImage(fortuna_img)
 
 ananasas_img = Image.open("src/img/ananasas.png")
-ananasas_img = ananasas_img.resize((300, 300))
+ananasas_img = ananasas_img.resize((250, 250))
 ananasas_img = ImageTk.PhotoImage(ananasas_img)
 
 ku_img = Image.open("src/img/ku.png")
-ku_img = ku_img.resize((200, 125))
+ku_img = ku_img.resize((150, 87))
 ku_img = ImageTk.PhotoImage(ku_img)
 
 conexus_img = Image.open("src/img/conexus.png")
-conexus_img = conexus_img.resize((200, 125))
+conexus_img = conexus_img.resize((200, 100))
 conexus_img = ImageTk.PhotoImage(conexus_img)
 
 fondas_img = Image.open("src/img/fondas.png")
-fondas_img = fondas_img.resize((100, 50))
+fondas_img = fondas_img.resize((100, 35))
 fondas_img = ImageTk.PhotoImage(fondas_img)
 
 screen_width = root.winfo_screenwidth()
@@ -93,7 +92,6 @@ def catch_candy(candy):
     frame.after(4000, lambda: show_count(2))
     frame.after(6000, lambda: show_count(1))
     frame.after(10000, show_main_interface)
-
 
 # Create the main window
 def show_main_interface():
