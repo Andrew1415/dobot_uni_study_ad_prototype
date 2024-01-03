@@ -18,23 +18,23 @@ root.attributes('-fullscreen', True)
 root.attributes("-type", "splash")
 # root.configure(bg="dark gray")
 
-fortuna_img = Image.open("fortuna.png")
+fortuna_img = Image.open("src/img/fortuna.png")
 # fortuna_img = fortuna_img.resize((250, 250))
 fortuna_img = ImageTk.PhotoImage(fortuna_img)
 
-ananasas_img = Image.open("ananasas.png")
+ananasas_img = Image.open("src/img/ananasas.png")
 ananasas_img = ananasas_img.resize((300, 300))
 ananasas_img = ImageTk.PhotoImage(ananasas_img)
 
-ku_img = Image.open("ku.png")
+ku_img = Image.open("src/img/ku.png")
 ku_img = ku_img.resize((200, 125))
 ku_img = ImageTk.PhotoImage(ku_img)
 
-conexus_img = Image.open("conexus.png")
+conexus_img = Image.open("src/img/conexus.png")
 conexus_img = conexus_img.resize((200, 125))
 conexus_img = ImageTk.PhotoImage(conexus_img)
 
-fondas_img = Image.open("fondas.png")
+fondas_img = Image.open("src/img/fondas.png")
 fondas_img = fondas_img.resize((100, 50))
 fondas_img = ImageTk.PhotoImage(fondas_img)
 
@@ -101,7 +101,7 @@ def catch_candy(candy):
 def show_main_interface():
     clear_frame()
 
-    question_label = tk.Label(frame, text="Kokio saldainio norite?", font=("Helvetica", 40))
+    question_label = tk.Label(frame, text="Kokio saldainio norite?", font=("Helvetica", 30))
     question_label.pack(pady=20)
 
     fortune_button = tk.Button(frame, command=lambda: pick_candy(FORTUNA), width=300, height=200, image=fortuna_img, borderwidth=0, relief="solid")
