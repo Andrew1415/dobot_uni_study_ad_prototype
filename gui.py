@@ -1,9 +1,15 @@
 import tkinter as tk
 import time
+from tkinter import messagebox 
 from PIL import Image, ImageTk
 
 FORTUNA = "fortuna"
 ANANASAS = "ananasas"
+
+def on_exit():
+    result = messagebox.askquestion("Exit", "Are you sure you want to exit?")
+    if result == "yes":
+        root.destroy()
 
 root = tk.Tk()
 root.title("Saldainiai")
@@ -104,9 +110,8 @@ def show_main_interface():
     ananasu_button = tk.Button(frame, command=lambda: pick_candy(ANANASAS), width=300, height=200, image=ananasas_img, borderwidth=0, relief="solid")
     ananasu_button.pack(side=tk.RIGHT, padx=10)
     
-    # Add an exit button with an X symbol
-    exit_button = tk.Button(frame, text="X", font=("Helvetica", 20), command=root.destroy)
-    exit_button.place(x=-10, y=-10)  # Adjust the position as needed
+    exit_button = tk.Button(frame, text="X", font=("Helvetica", 20), command=on_exit)
+    exit_button.place(x=window_width-40, y=10)
 
 show_main_interface()
 root.mainloop()
