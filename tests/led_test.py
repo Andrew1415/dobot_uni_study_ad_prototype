@@ -2,8 +2,8 @@ import RPi.GPIO as GPIO
 import time
 
 led_pin = 37
-led_pin2 = 33
-led_pin3 = 31
+led_pin2 = 35
+led_pin3 = 33
 GPIO.setmode(GPIO.BOARD)
 
 GPIO.setup(led_pin, GPIO.OUT)
@@ -24,9 +24,9 @@ def switch_led(pin):
 
 try:
     while True:
-        #switch_led(led_pin)
+        switch_led(led_pin)
         switch_led(led_pin2)
-        #switch_led(led_pin3)
+        switch_led(led_pin3)
 
 except KeyboardInterrupt:
     pass
