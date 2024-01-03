@@ -10,7 +10,8 @@ source venv/bin/activate
 # Install required packages
 pip install -r requirements.txt
 
-if [! (dpkg -s tk)]; then
+dpkg -s tk
+if [ $? -ne 0 ]; then
     sudo apt-get install tk
 fi
 
