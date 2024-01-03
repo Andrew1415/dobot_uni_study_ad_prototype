@@ -101,7 +101,7 @@ def catch_candy(candy):
 def show_main_interface():
     clear_frame()
 
-    question_label = tk.Label(frame, text="Kokio saldainio norite?", font=("Helvetica", 40))
+    question_label = tk.Label(frame, text="Kokio saldainio norite?", font=("Helvetica", 30))
     question_label.pack(pady=20)
 
     fortune_button = tk.Button(frame, command=lambda: pick_candy(FORTUNA), width=300, height=200, image=fortuna_img, borderwidth=0, relief="solid")
