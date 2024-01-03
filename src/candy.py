@@ -32,7 +32,7 @@ def request_candy(candy, ready_callback):
         raise ValueError("Invalid candy")
 
 
-    t1 = Thread(target=_wait_candy)
+    t1 = Thread(target=_wait_candy, args=(req_pin,ready_callback,))
     t1.start()
 
 def _wait_candy(req_pin, ready_callback):
