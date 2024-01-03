@@ -24,9 +24,9 @@ def switch_led(pin):
 
 try:
     while True:
-        switch_led(led_pin)
+        #switch_led(led_pin)
         switch_led(led_pin2)
-        switch_led(led_pin3)
+        #switch_led(led_pin3)
 
 except KeyboardInterrupt:
     pass
