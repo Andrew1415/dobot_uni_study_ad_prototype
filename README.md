@@ -1,6 +1,6 @@
 ## Installation
 1. Clone this repository `git clone https://github.com/np425/pi-dobot-gui`
-2. Run `bash install.sh`
+2. Create desktop icon that runs the application **in cloned directory** `bash install.sh`
 
 ## Development
 1. Clone this repository `git clone https://github.com/np425/pi-dobot-gui`
