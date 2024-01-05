@@ -22,7 +22,8 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Installing executable"
-sudo echo "bash $root_dir/run.sh" > /usr/local/bin/saldainiai
+sudo echo "#!/bin/bash" > /usr/local/bin/saldainiai
+sudo echo "bash $root_dir/run.sh" >> /usr/local/bin/saldainiai
 
 echo "Installing desktop icon"
 cp install/saldainiai.desktop ~/Desktop/
