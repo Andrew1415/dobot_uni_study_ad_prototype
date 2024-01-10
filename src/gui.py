@@ -83,12 +83,12 @@ def pick_candy(candy):
     received_signal = False
 
     def return_home():
-        global received_signal
+        nonlocal received_signal
         received_signal = True
         show_main_interface()
 
     def show_count(count):
-        print(f"Received signal {received_signal}...")
+        nonlocal received_signal
         if received_signal:
             return
 
