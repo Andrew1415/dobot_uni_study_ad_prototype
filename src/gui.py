@@ -89,6 +89,7 @@ def pick_candy(candy):
 
     def show_count(count):
         nonlocal received_signal
+        print(f"Received signal {received_signal}")
         if received_signal:
             return
 
