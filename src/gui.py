@@ -4,6 +4,8 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 from candy import ANANASAS, FORTUNA, request_candy
 
+countdown_step = 1500
+
 def on_exit():
     result = messagebox.askquestion("Exit", "Ar tikrai norite išeiti?")
     if result == "yes":
@@ -78,19 +80,17 @@ def pick_candy(candy):
     label = tk.Label(frame, text="Gaudykite saldainį!", font=("Rando", 25))
     label.pack(pady=20)
 
-    countdown = tk.Label(frame, text=3, font=("Rando", 25))
+    countdown = tk.Label(frame, font=("Rando", 25))
     countdown.pack()
     received_signal = False
 
     def return_home():
         nonlocal received_signal
-        print("Setting signal...")
         received_signal = True
         show_main_interface()
 
     def show_count(count):
         nonlocal received_signal
-        print(f"Received signal {received_signal}")
         if received_signal:
             return
 
@@ -98,9 +98,9 @@ def pick_candy(candy):
 
     request_candy(candy, return_home)
 
-    frame.after(1000, lambda: show_count(3))
-    frame.after(2000, lambda: show_count(2))
-    frame.after(3000, lambda: show_count(1))
+    frame.after(1*countdown_step, lambda: show_count(3))
+    frame.after(2*countdown_step, lambda: show_count(2))
+    frame.after(3*countdown_step, lambda: show_count(1))
 
 # Create the main window
 def show_main_interface():
