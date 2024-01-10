@@ -84,6 +84,7 @@ def pick_candy(candy):
 
     def return_home():
         nonlocal received_signal
+        print("Setting signal...")
         received_signal = True
         show_main_interface()
 
