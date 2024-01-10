@@ -88,7 +88,7 @@ def pick_candy(candy):
         show_main_interface()
 
     def show_count(count):
-        global countdown
+        print(f"Received signal {received_signal}...")
         if received_signal:
             return
 
