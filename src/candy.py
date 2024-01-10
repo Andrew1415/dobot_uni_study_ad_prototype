@@ -41,7 +41,8 @@ def _wait_candy(req_pin, ready_callback):
     while True:
         print("Waiting for robot input...")
         res = GPIO.input(_READY_PIN)
-        if res:
+        # output is reversed due to voltage converter
+        if not res:
             print("Robot signal received!")
             ready_callback()
             break
