@@ -79,6 +79,7 @@ def pick_candy(candy):
     label.pack(pady=20)
 
     countdown = tk.Label(frame, text=3, font=("Rando", 25))
+    countdown.pack()
     received_signal = False
 
     def return_home():
@@ -90,9 +91,6 @@ def pick_candy(candy):
         if received_signal:
             return
 
-        if not countdown.winfo_ismapped():
-            countdown.pack()
-        
         countdown.config(text=count)
 
     request_candy(candy, return_home)
