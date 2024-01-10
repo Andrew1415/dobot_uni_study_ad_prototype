@@ -88,10 +88,11 @@ def pick_candy(candy):
         show_main_interface()
 
     def show_count(count):
+        global countdown
         if received_signal:
             return
 
-        countdown.config(text=count)
+        countdown.config(text=str(count))
 
     request_candy(candy, return_home)
 
