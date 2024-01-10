@@ -9,8 +9,6 @@ _FORTUNA_PIN = 37
 _ANANASAS_PIN = 35
 _READY_PIN = 33
 
-CHECK_DELAY = 1
-
 def setup_gpio():
     GPIO.setmode(GPIO.BOARD)
 
@@ -48,8 +46,6 @@ def _wait_candy(req_pin, ready_callback):
             print("Robot signal received!")
             ready_callback()
             break
-
-        time.sleep(CHECK_DELAY)
 
     GPIO.output(req_pin, GPIO.LOW)
 
