@@ -8,18 +8,20 @@ ANANASAS = "ananasas"
 _FORTUNA_PIN = 37
 _ANANASAS_PIN = 35
 _READY_PIN = 33
-_TEST_PIN = 31
 
 CHECK_DELAY = 1
 
 def setup_gpio():
     GPIO.setmode(GPIO.BOARD)
+
     GPIO.setup(_FORTUNA_PIN, GPIO.OUT)
     GPIO.setup(_ANANASAS_PIN, GPIO.OUT)
     GPIO.setup(_READY_PIN, GPIO.IN)
-    GPIO.setup(_TEST_PIN, GPIO.OUT)
-    GPIO.output(_TEST_PIN, GPIO.LOW)
 
+    # Initial values
+    GPIO.output(_FORTUNA_PIN, GPIO.LOW)
+    GPIO.output(_ANANASAS_PIN, GPIO.LOW)
+    
 
 def request_candy(candy, ready_callback):
     print(f"Requesting candy {candy}...")
