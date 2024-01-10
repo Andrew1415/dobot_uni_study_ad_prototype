@@ -64,29 +64,41 @@ def clear_frame():
    for widgets in frame.winfo_children():
       widgets.destroy()
 
-def pick_candy(candy):
-    clear_frame()
-
-    label = tk.Label(frame, text="Saldainis imamas...", font=("Rando", 25))
-    label.pack()
+#def pick_candy(candy):
+#    clear_frame()
+#
+#    label = tk.Label(frame, text="Saldainis imamas...", font=("Rando", 25))
+#    label.pack()
     
-    request_candy(candy, lambda: catch_candy(candy))
-
-def catch_candy(candy):
+#    request_candy(candy, lambda: catch_candy(candy))
+      
+def pick_candy(candy):
     clear_frame()
 
     label = tk.Label(frame, text="Gaudykite saldainį!", font=("Rando", 25))
     label.pack(pady=20)
 
     countdown = tk.Label(frame, text=3, font=("Rando", 25))
+    received_signal = False
+
+    def return_home():
+        received_signal = True
+        show_main_interface()
 
     def show_count(count):
+        if received_signal:
+            return
+
+        if not countdown.winfo_ismapped():
+            countdown.pack()
+        
         countdown.config(text=count)
 
-    frame.after(2000, lambda: countdown.pack())
-    frame.after(4000, lambda: show_count(2))
-    frame.after(6000, lambda: show_count(1))
-    frame.after(10000, show_main_interface)
+    request_candy(candy, return_home)
+
+    frame.after(1000, lambda: show_count(3))
+    frame.after(2000, lambda: show_count(2))
+    frame.after(3000, lambda: show_count(1))
 
 # Create the main window
 def show_main_interface():
