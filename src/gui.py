@@ -82,6 +82,7 @@ def pick_candy(candy):
     received_signal = False
 
     def return_home():
+        global received_signal
         received_signal = True
         show_main_interface()
 
