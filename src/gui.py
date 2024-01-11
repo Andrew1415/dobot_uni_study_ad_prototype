@@ -87,9 +87,6 @@ def load_logos():
     ananasas_img = ImageTk.PhotoImage(ananasas_img)
 
 def main():
-    # Load logos used in the application
-    load_logos()
-
     # Create main window in fullscreen
     global window
     window = tk.Tk()
@@ -106,6 +103,9 @@ def main():
     y_position = (screen_height - WINDOW_HEIGHT) // 2
 
     window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x_position}+{y_position}")
+
+    # Load logos used in the application
+    load_logos()
 
     # Setup header of the window
     global frame_header
