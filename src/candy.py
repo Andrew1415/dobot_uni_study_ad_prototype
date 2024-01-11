@@ -13,6 +13,8 @@ _THREAD_WAITING: Thread = None
 _STOP_THREAD = False
 
 def setup_communication():
+    print("Setting up GPIO pins...")
+
     GPIO.setmode(GPIO.BOARD)
 
     GPIO.setup(_FORTUNA_PIN, GPIO.OUT)
@@ -24,6 +26,8 @@ def setup_communication():
     GPIO.output(_ANANASAS_PIN, GPIO.LOW)
     
 def close_communication():
+    print("Cleaning up GPIO pins...")
+
     GPIO.cleanup()
 
 def request_candy(candy, ready_callback):
