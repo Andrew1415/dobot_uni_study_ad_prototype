@@ -1,11 +1,13 @@
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
-from candy import ANANASAS, FORTUNA, request_candy, setup_communication, close_communication
 
 COUNTDOWN_STEP = 1500
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 600
+
+FORTUNA = "fortuna"
+ANANASAS = "ananasas"
 
 def on_exit():
     result = messagebox.askquestion("Exit", "Ar tikrai norite išeiti?")
@@ -42,11 +44,12 @@ def view_catch_candy(candy):
 
         countdown.config(text=str(count))
 
-    request_candy(candy, on_robot_response)
-
     frame_content.after(1 * COUNTDOWN_STEP, lambda: show_count(3))
     frame_content.after(2 * COUNTDOWN_STEP, lambda: show_count(2))
     frame_content.after(3 * COUNTDOWN_STEP, lambda: show_count(1))
+
+    # Countdown to return to main page
+    frame_content.after(4 * COUNTDOWN_STEP, on_robot_response)
 
 def view_select_candy():
     clear_frame(frame_content)
@@ -139,12 +142,9 @@ def setup_window():
 
 def main():
     try:
-        setup_communication()
         setup_window()
     except Exception as e:
         print(e)
-    finally:
-        close_communication()
 
 if __name__ == "__main__":
     main()
