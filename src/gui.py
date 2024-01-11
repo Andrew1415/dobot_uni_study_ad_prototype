@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
-from candy import ANANASAS, FORTUNA, request_candy
+from candy import ANANASAS, FORTUNA, request_candy, setup_communication, close_communication
 
 COUNTDOWN_STEP = 1500
 WINDOW_WIDTH = 1024
@@ -86,7 +86,7 @@ def load_logos():
     ananasas_img = ananasas_img.resize((250, 250))
     ananasas_img = ImageTk.PhotoImage(ananasas_img)
 
-def main():
+def setup_window():
     # Create main window in fullscreen
     global window
     window = tk.Tk()
@@ -136,6 +136,15 @@ def main():
 
     # Window loop
     window.mainloop()
+
+def main():
+    try:
+        setup_communication()
+        setup_window()
+    except Exception as e:
+        print(e)
+    finally:
+        close_communication()
 
 if __name__ == "__main__":
     main()
