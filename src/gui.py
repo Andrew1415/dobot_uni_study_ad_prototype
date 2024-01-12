@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
-from question_bank import next_question
+from question_bank import next_question, categories
 import random
 
 COUNTDOWN_STEP = 1500
@@ -36,7 +36,7 @@ def view_catch_candy(candy):
         nonlocal robot_responded
         robot_responded = True
 
-        view_quiz()
+        view_select_category()
 
     def show_count(count):
         nonlocal robot_responded
@@ -66,12 +66,21 @@ def view_select_candy():
     ananasu_button = tk.Button(frame_content, command=lambda: view_catch_candy(ANANASAS), width=300, height=200, image=ananasas_img, borderwidth=0, relief="solid")
     ananasu_button.pack(side=tk.RIGHT, padx=10)
 
-def view_quiz():
+def view_select_category():
     clear_frame(frame_content)
 
-    question_data = next_question()
+    category_label = tk.Label(frame_content, text="Pasirinkite kategoriją", font=("Rando", 35))
+    category_label.pack(pady=20)
 
-    question_frame = tk.Frame(frame_content)
+    # Display category buttons
+    for category in categories.keys():
+        category_button = tk.Button(frame_content, command=lambda cat=category: view_quiz(cat), text=category, font=("Rando", 25), width=15, height=2, borderwidth=0, relief="solid")
+        category_button.pack(pady=10)
+
+def view_quiz(current_category):
+    clear_frame(frame_content)
+
+    question_data = next_question(current_category)
 
     question_label = tk.Label(frame_content, text=question_data["question"], font=("Rando", 35))
     question_label.pack(pady=20)
@@ -91,8 +100,6 @@ def view_quiz():
                                   text=answer, font=("Rando", 25), width=button_width, height=button_height, borderwidth=0, relief="solid")
         answer_button.pack(pady=5)
 
-    return question_frame
-
 def show_incorrect_answer():
     clear_frame(frame_content)
 
@@ -100,7 +107,7 @@ def show_incorrect_answer():
     incorrect_label.pack(pady=20)
 
     # After two seconds, refresh and return to the quiz
-    frame_content.after(2000, view_quiz)
+    frame_content.after(2000, view_select_category)
 
 def check_answer(answer, correct_answer):
     # Check if the answer is correct
@@ -181,7 +188,7 @@ def setup_window():
     frame_content.pack(expand=True)
 
     # Display question frame first
-    view_quiz()
+    view_select_category()
 
     # Window loop
     window.mainloop()
