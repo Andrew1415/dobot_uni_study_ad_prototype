@@ -11,7 +11,7 @@ IN_PINS = [33]
 
 DELAY = 2
 
-def setup():
+def setup_pins():
     GPIO.setmode(GPIO.BOARD)
 
     # Pin direction
@@ -53,6 +53,8 @@ def toggle_out_pins():
         toggle_out(pin)
 
 def main():
+    setup_pins()
+
     t1 = threading.Thread(target=log_in_pins)
     t2 = threading.Thread(target=toggle_out_pins)
 
