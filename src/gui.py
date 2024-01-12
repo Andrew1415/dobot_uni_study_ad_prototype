@@ -169,13 +169,13 @@ def setup_window():
 
     # Display logos in the header
     conexus_logo = tk.Label(frame_header, width=300, height=100, image=conexus_img, borderwidth=0, relief="solid")
-    conexus_logo.pack(side=tk.LEFT, padx=10)
+    conexus_logo.pack(side=tk.LEFT, padx=1)
 
     ku_logo = tk.Label(frame_header, width=600, height=120, image=ku_img, borderwidth=0, relief="solid")
-    ku_logo.pack(side=tk.LEFT, padx=10)
+    ku_logo.pack(side=tk.LEFT, padx=1)
 
     fondas_logo = tk.Label(frame_header, width=200, height=100, image=fondas_img, borderwidth=0, relief="solid")
-    fondas_logo.pack(side=tk.LEFT, padx=10)
+    fondas_logo.pack(side=tk.LEFT, padx=1)
 
     # Display close button
     exit_button = tk.Button(window, text="X", font=("Rando", 20), command=on_exit)
