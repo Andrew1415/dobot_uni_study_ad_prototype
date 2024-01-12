@@ -1,11 +1,15 @@
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
-from candy import ANANASAS, FORTUNA, request_candy, setup_communication, close_communication
+from question_bank import next_question, categories
+import random
 
 COUNTDOWN_STEP = 1500
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 600
+
+FORTUNA = "fortuna"
+ANANASAS = "ananasas"
 
 def on_exit():
     result = messagebox.askquestion("Exit", "Ar tikrai norite išeiti?")
@@ -25,40 +29,92 @@ def view_catch_candy(candy):
     countdown = tk.Label(frame_content, font=("Rando", 25))
     countdown.pack()
 
-    # Remembers if robot has returned a signal, to prevent countdown
+    # Remembers if the robot has returned a signal, to prevent countdown
     robot_responded = False
 
     def on_robot_response():
         nonlocal robot_responded
         robot_responded = True
 
-        view_select_candy()
+        view_select_category()
 
     def show_count(count):
         nonlocal robot_responded
         if robot_responded:
-            # If robot already responded, do not continue counting
+            # If the robot already responded, do not continue counting
             return
 
         countdown.config(text=str(count))
-
-    request_candy(candy, on_robot_response)
 
     frame_content.after(1 * COUNTDOWN_STEP, lambda: show_count(3))
     frame_content.after(2 * COUNTDOWN_STEP, lambda: show_count(2))
     frame_content.after(3 * COUNTDOWN_STEP, lambda: show_count(1))
 
+    # Countdown to return to the main page
+    frame_content.after(4 * COUNTDOWN_STEP, on_robot_response)
+    
 def view_select_candy():
     clear_frame(frame_content)
 
-    question_label = tk.Label(frame_content, text="Kokio saldainio norite?", font=("Rando", 30))
+    question_label = tk.Label(frame_content, text="Sveikiname! Atsakėte teisingai. Kokio saldainio norite?", font=("Rando", 30))
     question_label.pack(pady=20)
 
+    # Display answer buttons
     fortune_button = tk.Button(frame_content, command=lambda: view_catch_candy(FORTUNA), width=300, height=200, image=fortuna_img, borderwidth=0, relief="solid")
     fortune_button.pack(side=tk.LEFT, padx=10)
 
     ananasu_button = tk.Button(frame_content, command=lambda: view_catch_candy(ANANASAS), width=300, height=200, image=ananasas_img, borderwidth=0, relief="solid")
     ananasu_button.pack(side=tk.RIGHT, padx=10)
+
+def view_select_category():
+    clear_frame(frame_content)
+
+    category_label = tk.Label(frame_content, text="Pasirinkite kategoriją", font=("Rando", 35))
+    category_label.pack(pady=20)
+
+    # Display category buttons
+    for category in categories.keys():
+        category_button = tk.Button(frame_content, command=lambda cat=category: view_quiz(cat), text=category, font=("Rando", 25), width=15, height=2, borderwidth=0, relief="solid")
+        category_button.pack(pady=10)
+
+def view_quiz(current_category):
+    clear_frame(frame_content)
+
+    question_data = next_question(current_category)
+
+    question_label = tk.Label(frame_content, text=question_data["question"], font=("Rando", 35))
+    question_label.pack(pady=20)
+
+    # Create a list with the correct and incorrect answers
+    answers = [question_data["correct_answer"]] + question_data["incorrect_answers"]
+
+    # Shuffle the answers to randomize their placement
+    random.shuffle(answers)
+
+    button_width = 15
+    button_height = 2  # Set the desired height
+
+    # Display answer buttons without labels
+    for answer in answers:
+        answer_button = tk.Button(frame_content, command=lambda ans=answer: check_answer(ans, question_data["correct_answer"]),
+                                  text=answer, font=("Rando", 25), width=button_width, height=button_height, borderwidth=0, relief="solid")
+        answer_button.pack(pady=5)
+
+def show_incorrect_answer():
+    clear_frame(frame_content)
+
+    incorrect_label = tk.Label(frame_content, text="Atsakymas neteisingas. Bandykite dar kartą.", font=("Rando", 35))
+    incorrect_label.pack(pady=20)
+
+    # After two seconds, refresh and return to the quiz
+    frame_content.after(2000, view_select_category)
+
+def check_answer(answer, correct_answer):
+    # Check if the answer is correct
+    if answer == correct_answer:
+        view_select_candy()  # Show the main content
+    else:
+        show_incorrect_answer()
 
 # Loads used images and set up their sizes
 def load_logos():
@@ -131,20 +187,17 @@ def setup_window():
     frame_content = tk.Frame(window)
     frame_content.pack(expand=True)
 
-    # Display main interface
-    view_select_candy()
+    # Display question frame first
+    view_select_category()
 
     # Window loop
     window.mainloop()
 
 def main():
     try:
-        setup_communication()
         setup_window()
     except Exception as e:
         print(e)
-    finally:
-        close_communication()
 
 if __name__ == "__main__":
     main()
