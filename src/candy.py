@@ -5,10 +5,11 @@ from threading import Thread
 FORTUNA = "fortuna"
 ANANASAS = "ananasas"
 
-_FORTUNA_PIN = 37
-_ANANASAS_PIN = 35
+_PIN_FORTUNA = 37
+_PIN_ANANASAS = 35
 _READY_PIN = 33
 
+DELAY_WAIT = 1
 _THREAD_WAITING: Thread = None
 _STOP_THREAD = False
 
@@ -17,13 +18,13 @@ def setup_communication():
 
     GPIO.setmode(GPIO.BOARD)
 
-    GPIO.setup(_FORTUNA_PIN, GPIO.OUT)
-    GPIO.setup(_ANANASAS_PIN, GPIO.OUT)
+    GPIO.setup(_PIN_FORTUNA, GPIO.OUT)
+    GPIO.setup(_PIN_ANANASAS, GPIO.OUT)
     GPIO.setup(_READY_PIN, GPIO.IN)
 
     # Initial values
-    GPIO.output(_FORTUNA_PIN, GPIO.LOW)
-    GPIO.output(_ANANASAS_PIN, GPIO.LOW)
+    GPIO.output(_PIN_FORTUNA, GPIO.LOW)
+    GPIO.output(_PIN_ANANASAS, GPIO.LOW)
     
 def close_communication():
     print("Cleaning up GPIO pins...")
@@ -41,9 +42,9 @@ def request_candy(candy, ready_callback):
         _STOP_THREAD = False
 
     if candy == FORTUNA:
-        req_pin = _FORTUNA_PIN
+        req_pin = _PIN_FORTUNA
     elif candy == ANANASAS:
-        req_pin = _ANANASAS_PIN
+        req_pin = _PIN_ANANASAS
     else:
         raise ValueError("Invalid candy")
 
@@ -64,6 +65,9 @@ def _wait_candy(req_pin, ready_callback):
             print("Robot signal received!")
             received_output = True
             break
+
+        # wait time, to reduce CPU usage
+        time.sleep(DELAY_WAIT)
 
     GPIO.output(req_pin, GPIO.LOW)
 
