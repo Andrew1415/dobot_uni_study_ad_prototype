@@ -1,51 +1,75 @@
 import RPi.GPIO as GPIO
 import time
-from threading import Thread
+import threading
 
 FORTUNA = "fortuna"
 ANANASAS = "ananasas"
 
-_FORTUNA_PIN = 37
-_ANANASAS_PIN = 35
+_PIN_FORTUNA = 37
+_PIN_ANANASAS = 35
 _READY_PIN = 33
 
-def setup_gpio():
+DELAY_WAIT = 1
+_THREAD_WAITING: threading.Thread = None
+_STOP_THREAD = False
+
+def setup_communication():
+    print("Setting up GPIO pins...")
+
     GPIO.setmode(GPIO.BOARD)
 
-    GPIO.setup(_FORTUNA_PIN, GPIO.OUT)
-    GPIO.setup(_ANANASAS_PIN, GPIO.OUT)
+    GPIO.setup(_PIN_FORTUNA, GPIO.OUT)
+    GPIO.setup(_PIN_ANANASAS, GPIO.OUT)
     GPIO.setup(_READY_PIN, GPIO.IN)
 
     # Initial values
-    GPIO.output(_FORTUNA_PIN, GPIO.LOW)
-    GPIO.output(_ANANASAS_PIN, GPIO.LOW)
+    GPIO.output(_PIN_FORTUNA, GPIO.LOW)
+    GPIO.output(_PIN_ANANASAS, GPIO.LOW)
     
+def close_communication():
+    print("Cleaning up GPIO pins...")
+
+    GPIO.cleanup()
 
 def request_candy(candy, ready_callback):
-    print(f"Requesting candy {candy}...")
+    # Terminate current thread if there is one running
+    global _THREAD_WAITING, _STOP_THREAD
+    if _THREAD_WAITING is not None and _THREAD_WAITING.is_alive():
+        # Waits for the current thread to stop
+        print("Current candy request has not been finished, aborting the current one")
+        _STOP_THREAD = True
+        _THREAD_WAITING.join()
+        _STOP_THREAD = False
 
     if candy == FORTUNA:
-        req_pin = _FORTUNA_PIN
+        req_pin = _PIN_FORTUNA
     elif candy == ANANASAS:
-        req_pin = _ANANASAS_PIN
+        req_pin = _PIN_ANANASAS
     else:
         raise ValueError("Invalid candy")
 
+    print(f"Requesting new candy {candy}...")
 
-    t1 = Thread(target=_wait_candy, args=(req_pin,ready_callback,))
-    t1.start()
+    # Creates thread in the background and waits for the robot response
+    _THREAD_WAITING = threading.Thread(target=_wait_candy, args=(req_pin,ready_callback,))
+    _THREAD_WAITING.start()
 
 def _wait_candy(req_pin, ready_callback):
     GPIO.output(req_pin, GPIO.HIGH)
+    received_output = False
 
-    while True:
+    while not _STOP_THREAD:
         res = GPIO.input(_READY_PIN)
-        # output is reversed due to voltage converter
+        # output signal is reversed due to voltage converter
         if res == GPIO.LOW:
             print("Robot signal received!")
-            ready_callback()
+            received_output = True
             break
+
+        # wait time, to reduce CPU usage
+        time.sleep(DELAY_WAIT)
 
     GPIO.output(req_pin, GPIO.LOW)
 
-setup_gpio()
+    if received_output:
+        return ready_callback()
