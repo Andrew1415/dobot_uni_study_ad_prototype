@@ -121,7 +121,7 @@ def load_logos():
 
     # University logos
     ku_img = Image.open("src/img/ku.png")
-    ku_img = ku_img.resize((150*2, 87*2))
+    ku_img = ku_img.resize((300, 170))
     ku_img = ImageTk.PhotoImage(ku_img)
 
     conexus_img = Image.open("src/img/conexus.png")
@@ -172,7 +172,7 @@ def setup_window():
     conexus_logo.pack(side=tk.LEFT, padx=10)
 
     ku_logo = tk.Label(frame_header, width=600, height=120, image=ku_img, borderwidth=0, relief="solid")
-    ku_logo.pack(side=tk.LEFT, padx=5)
+    ku_logo.pack(side=tk.LEFT, padx=10)
 
     fondas_logo = tk.Label(frame_header, width=200, height=100, image=fondas_img, borderwidth=0, relief="solid")
     fondas_logo.pack(side=tk.LEFT, padx=10)
