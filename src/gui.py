@@ -102,7 +102,7 @@ def view_quiz(current_category):
 def show_incorrect_answer():
     clear_frame(frame_content)
 
-    incorrect_label = tk.Label(frame_content, text="Atsakymas neteisingas. Bandykite dar kartą.", font=("Rando", 35))
+    incorrect_label = tk.Label(frame_content, text="Atsakymas neteisingas. Bandykite dar kartą.", font=("Rando", 30))
     incorrect_label.pack(pady=20)
 
     # After two seconds, refresh and return to the quiz
@@ -125,11 +125,11 @@ def load_logos():
     ku_img = ImageTk.PhotoImage(ku_img)
 
     conexus_img = Image.open("src/img/conexus.png")
-    conexus_img = conexus_img.resize((200, 100))
+    conexus_img = conexus_img.resize((100, 50))
     conexus_img = ImageTk.PhotoImage(conexus_img)
 
     fondas_img = Image.open("src/img/fondas.png")
-    fondas_img = fondas_img.resize((100, 35))
+    fondas_img = fondas_img.resize((50, 17))
     fondas_img = ImageTk.PhotoImage(fondas_img)
 
     # Candy logos
