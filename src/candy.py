@@ -49,7 +49,6 @@ def request_candy(candy, ready_callback):
         raise ValueError("Invalid candy")
 
     print(f"Requesting new candy {candy}...")
-    print(f"Amount of threads currently used: {threading.active_count()}")
 
     # Creates thread in the background and waits for the robot response
     _THREAD_WAITING = threading.Thread(target=_wait_candy, args=(req_pin,ready_callback,))
