@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 import time
-from threading import Thread
+import threading
 
 FORTUNA = "fortuna"
 ANANASAS = "ananasas"
@@ -10,7 +10,7 @@ _PIN_ANANASAS = 35
 _READY_PIN = 33
 
 DELAY_WAIT = 1
-_THREAD_WAITING: Thread = None
+_THREAD_WAITING: threading.Thread = None
 _STOP_THREAD = False
 
 def setup_communication():
@@ -49,9 +49,10 @@ def request_candy(candy, ready_callback):
         raise ValueError("Invalid candy")
 
     print(f"Requesting new candy {candy}...")
+    print(f"Amount of threads currently used: {threading.active_count()}")
 
     # Creates thread in the background and waits for the robot response
-    _THREAD_WAITING = Thread(target=_wait_candy, args=(req_pin,ready_callback,))
+    _THREAD_WAITING = threading.Thread(target=_wait_candy, args=(req_pin,ready_callback,))
     _THREAD_WAITING.start()
 
 def _wait_candy(req_pin, ready_callback):
