@@ -18,7 +18,8 @@ def setup():
     for pin in OUT_PINS:
         GPIO.setup(pin[0], GPIO.OUT)
 
-    GPIO.setup(IN_PINS[0], GPIO.IN)
+    for pin in IN_PINS:
+        GPIO.setup(pin[0], GPIO.IN)
 
     # Initial states
     for pin in OUT_PINS:
@@ -62,4 +63,9 @@ def main():
     t2.join()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except:
+        pass
+    finally:
+        GPIO.cleanup()
