@@ -121,7 +121,7 @@ def load_logos():
 
     # University logos
     ku_img = Image.open("src/img/ku.png")
-    ku_img = ku_img.resize((150, 87))
+    ku_img = ku_img.resize((150*2, 87*2))
     ku_img = ImageTk.PhotoImage(ku_img)
 
     conexus_img = Image.open("src/img/conexus.png")
