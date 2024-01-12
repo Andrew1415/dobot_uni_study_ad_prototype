@@ -15,8 +15,8 @@ def setup():
     GPIO.setmode(GPIO.BOARD)
 
     # Pin direction
-    GPIO.setup(OUT_PINS[0][0], GPIO.OUT)
-    GPIO.setup(OUT_PINS[1][0], GPIO.OUT)
+    for pin in OUT_PINS:
+        GPIO.setup(pin[0], GPIO.OUT)
 
     GPIO.setup(IN_PINS[0], GPIO.IN)
 
