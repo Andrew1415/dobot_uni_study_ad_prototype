@@ -19,7 +19,7 @@ def setup():
         GPIO.setup(pin[0], GPIO.OUT)
 
     for pin in IN_PINS:
-        GPIO.setup(pin[0], GPIO.IN)
+        GPIO.setup(pin, GPIO.IN)
 
     # Initial states
     for pin in OUT_PINS:
