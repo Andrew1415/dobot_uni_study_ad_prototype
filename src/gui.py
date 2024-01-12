@@ -53,7 +53,9 @@ def view_catch_candy(candy):
 def view_select_candy():
     clear_frame(frame_content)
 
-    question_label = tk.Label(frame_content, text="Sveikiname! Atsakėte teisingai. Kokio saldainio norite?", font=("Rando", 30))
+    question_label = tk.Label(frame_content, text="Sveikiname! Atsakėte teisingai.", font=("Rando", 30))
+    question_label.pack(pady=20)
+    question_label = tk.Label(frame_content, text="Kokio saldainio norite?", font=("Rando", 30))
     question_label.pack(pady=20)
 
     # Display answer buttons
