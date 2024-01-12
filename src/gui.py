@@ -168,13 +168,13 @@ def setup_window():
     frame_header.pack(expand=True)
 
     # Display logos in the header
-    conexus_logo = tk.Label(frame_header, width=300, height=100, image=conexus_img, borderwidth=0, relief="solid")
+    conexus_logo = tk.Label(frame_header, width=300, height=100, justify="left", image=conexus_img, borderwidth=0, relief="solid")
     conexus_logo.pack(side=tk.LEFT, padx=1)
 
-    ku_logo = tk.Label(frame_header, width=600, height=120, image=ku_img, borderwidth=0, relief="solid")
-    ku_logo.pack(side=tk.LEFT, padx=-5)
+    ku_logo = tk.Label(frame_header, width=600, height=120, justify="center", image=ku_img, borderwidth=0, relief="solid")
+    ku_logo.pack(side=tk.LEFT, padx=1)
 
-    fondas_logo = tk.Label(frame_header, width=200, height=100, image=fondas_img, borderwidth=0, relief="solid")
+    fondas_logo = tk.Label(frame_header, width=200, height=100, justify="right", image=fondas_img, borderwidth=0, relief="solid")
     fondas_logo.pack(side=tk.LEFT, padx=1)
 
     # Display close button
