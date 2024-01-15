@@ -81,7 +81,7 @@ def view_quiz(current_category):
 
     question_data = next_question(current_category)
 
-    question_label = tk.Label(frame_content, text=question_data["question"], font=("Rando", 35))
+    question_label = tk.Label(frame_content, text=question_data["question"], font=("Rando", 20))
     question_label.pack(pady=20)
 
     # Create a list with the correct and incorrect answers
@@ -90,7 +90,7 @@ def view_quiz(current_category):
     # Shuffle the answers to randomize their placement
     random.shuffle(answers)
 
-    button_width = 15
+    button_width = 100
     button_height = 2  # Set the desired height
 
     # Display answer buttons without labels
