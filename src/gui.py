@@ -49,7 +49,7 @@ def view_catch_candy(candy):
     frame_content.after(1 * COUNTDOWN_STEP, lambda: show_count(3))
     frame_content.after(2 * COUNTDOWN_STEP, lambda: show_count(2))
     frame_content.after(3 * COUNTDOWN_STEP, lambda: show_count(1))
-    
+
 def view_select_candy():
     clear_frame(frame_content)
 
@@ -121,15 +121,15 @@ def load_logos():
 
     # University logos
     ku_img = Image.open("src/img/ku.png")
-    ku_img = ku_img.resize((150, 170))
+    ku_img = ku_img.resize((250, 80))
     ku_img = ImageTk.PhotoImage(ku_img)
 
     conexus_img = Image.open("src/img/conexus.png")
-    conexus_img = conexus_img.resize((100, 50))
+    conexus_img = conexus_img.resize((120, 50))
     conexus_img = ImageTk.PhotoImage(conexus_img)
 
     fondas_img = Image.open("src/img/fondas.png")
-    fondas_img = fondas_img.resize((50, 17))
+    fondas_img = fondas_img.resize((140, 45))
     fondas_img = ImageTk.PhotoImage(fondas_img)
 
     # Candy logos
@@ -168,14 +168,14 @@ def setup_window():
     frame_header.pack(expand=True)
 
     # Display logos in the header
-    conexus_logo = tk.Label(frame_header, width=300, height=100, justify="left", image=conexus_img, borderwidth=0, relief="solid")
-    conexus_logo.pack(side=tk.LEFT, padx=1)
+    conexus_logo = tk.Label(frame_header, height=120, image=conexus_img, borderwidth=0, relief="solid")
+    conexus_logo.grid(row = 0, column = 0, padx=10)
 
-    ku_logo = tk.Label(frame_header, width=600, height=120, justify="center", image=ku_img, borderwidth=0, relief="solid")
-    ku_logo.pack(side=tk.LEFT, padx=1)
+    ku_logo = tk.Label(frame_header, height=120, image=ku_img, borderwidth=0, relief="solid")
+    ku_logo.grid(row = 0, column = 1, padx=10)
 
-    fondas_logo = tk.Label(frame_header, width=200, height=100, justify="right", image=fondas_img, borderwidth=0, relief="solid")
-    fondas_logo.pack(side=tk.LEFT, padx=1)
+    fondas_logo = tk.Label(frame_header, height=120, image=fondas_img, borderwidth=0, relief="solid")
+    fondas_logo.grid(row = 0, column = 2, padx=10)
 
     # Display close button
     exit_button = tk.Button(window, text="X", font=("Rando", 20), command=on_exit)
