@@ -10,7 +10,7 @@ This project consists of 3 parts:
 This github repository covers the first part of this project.
 
 ## Logic
-![Raspberry Flow Diagram](doc/Candy_Raspberry_Flow_Diagram.drawio)
+![Raspberry Flow Diagram](doc/Candy_Raspberry_Flow_Diagram.drawio.svg)
 
 GPIO Pins used for the project:
 - Out 35 for candy "Ananasas" selection
@@ -28,5 +28,5 @@ GPIO Pins used for the project:
 4. To run `python src/gui.py`
 
 ## Configuration
-- Pin configuration can be changed in file `candy.py`
-- Quiz question bank can be changed in file `question_bank.py`
+- Pin configuration can be changed in file [candy.py](src/candy.py)
+- Quiz question bank can be changed in file [question_bank.py](question_bank.py)
