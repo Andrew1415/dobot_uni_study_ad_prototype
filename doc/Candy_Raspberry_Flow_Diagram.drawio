@@ -1,0 +1,84 @@
+<mxfile host="Electron" modified="2024-02-04T19:18:07.626Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/23.0.2 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="vPkdAAyT4Hsf0L6f229g" version="23.0.2" type="device">
+  <diagram name="Page-1" id="o3ux8_m48p6dB8-1JP5q">
+    <mxGraphModel dx="-33" dy="1587" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="E-Kg5k6X5SO2DC5MbZr2-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;noEdgeStyle=1;orthogonal=1;" parent="1" source="E-Kg5k6X5SO2DC5MbZr2-60" target="E-Kg5k6X5SO2DC5MbZr2-61" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1252" y="-375.00222222222226" />
+              <mxPoint x="1278" y="-375.00222222222226" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="E-Kg5k6X5SO2DC5MbZr2-60" value="Start" style="ellipse;aspect=fixed;strokeWidth=2;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="1190" y="-400.00222222222226" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="E-Kg5k6X5SO2DC5MbZr2-61" value="Quiz Category&#xa;Selection" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="1290" y="-392.50222222222226" width="117" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="E-Kg5k6X5SO2DC5MbZr2-62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;orthogonal=1;" parent="1" source="E-Kg5k6X5SO2DC5MbZr2-61" target="E-Kg5k6X5SO2DC5MbZr2-66" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="4210" y="469.72" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="E-Kg5k6X5SO2DC5MbZr2-63" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;orthogonal=1;" parent="1" source="E-Kg5k6X5SO2DC5MbZr2-66" target="E-Kg5k6X5SO2DC5MbZr2-68" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1590" y="-380" />
+              <mxPoint x="1590" y="-380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="E-Kg5k6X5SO2DC5MbZr2-64" value="Correctly&lt;br&gt;Answered" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="E-Kg5k6X5SO2DC5MbZr2-63" vertex="1" connectable="0">
+          <mxGeometry x="0.0069" y="1" relative="1" as="geometry">
+            <mxPoint y="-16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="E-Kg5k6X5SO2DC5MbZr2-72" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="E-Kg5k6X5SO2DC5MbZr2-66" target="E-Kg5k6X5SO2DC5MbZr2-61" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1570" y="-370" />
+              <mxPoint x="1570" y="-340" />
+              <mxPoint x="1270" y="-340" />
+              <mxPoint x="1270" y="-375" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="E-Kg5k6X5SO2DC5MbZr2-73" value="Incorrectly answered" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="E-Kg5k6X5SO2DC5MbZr2-72" vertex="1" connectable="0">
+          <mxGeometry x="0.0141" y="-2" relative="1" as="geometry">
+            <mxPoint y="2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="E-Kg5k6X5SO2DC5MbZr2-66" value="Question" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="1437" y="-392.5" width="117" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="E-Kg5k6X5SO2DC5MbZr2-67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;orthogonal=1;" parent="1" source="E-Kg5k6X5SO2DC5MbZr2-68" target="E-Kg5k6X5SO2DC5MbZr2-71" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E-Kg5k6X5SO2DC5MbZr2-68" value="Candy Selection" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="1620" y="-400" width="117" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="E-Kg5k6X5SO2DC5MbZr2-69" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;orthogonal=1;" parent="1" source="E-Kg5k6X5SO2DC5MbZr2-71" target="E-Kg5k6X5SO2DC5MbZr2-61" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1900" y="-380" />
+              <mxPoint x="1900" y="-320" />
+              <mxPoint x="1270" y="-320" />
+              <mxPoint x="1270" y="-375" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="E-Kg5k6X5SO2DC5MbZr2-70" value="Candy Drop Signal Received" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="E-Kg5k6X5SO2DC5MbZr2-69" vertex="1" connectable="0">
+          <mxGeometry x="0.0476" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="E-Kg5k6X5SO2DC5MbZr2-71" value="Countdown" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="1761" y="-400" width="117" height="35" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
