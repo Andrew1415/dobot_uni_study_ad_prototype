@@ -59,10 +59,10 @@ def view_select_candy():
     question_label.pack(pady=20)
 
     # Display answer buttons
-    fortune_button = tk.Button(frame_content, command=lambda: view_catch_candy(FORTUNA), width=300, height=200, image=fortuna_img, borderwidth=0, relief="solid")
+    fortune_button = tk.Button(frame_content, command=lambda: view_catch_candy(FORTUNA), width=250, height=250, image=fortuna_img, borderwidth=0, relief="solid")
     fortune_button.pack(side=tk.LEFT, padx=10)
 
-    ananasu_button = tk.Button(frame_content, command=lambda: view_catch_candy(ANANASAS), width=300, height=200, image=ananasas_img, borderwidth=0, relief="solid")
+    ananasu_button = tk.Button(frame_content, command=lambda: view_catch_candy(ANANASAS), width=250, height=250, image=ananasas_img, borderwidth=0, relief="solid")
     ananasu_button.pack(side=tk.RIGHT, padx=10)
 
 def view_select_category():
@@ -134,7 +134,7 @@ def load_logos():
 
     # Candy logos
     fortuna_img = Image.open("src/img/fortuna.png")
-    fortuna_img = fortuna_img.resize((250, 200))
+    fortuna_img = fortuna_img.resize((250, 250))
     fortuna_img = ImageTk.PhotoImage(fortuna_img)
 
     ananasas_img = Image.open("src/img/ananasas.png")
