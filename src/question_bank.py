@@ -3,7 +3,7 @@ import json
 questions_file = "questions.json"
 
 f = open(questions_file)
-catagories = json.load(f)
+categories = json.load(f)
 
 # Store the current question index and category
 current_question_index = {category: 0 for category in categories}
