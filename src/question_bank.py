@@ -1,30 +1,30 @@
-import random
 import json
-questions_file = "questions.json"
 
-f = open(questions_file)
-categories = json.load(f)
+QUESTIONS_FILE = "questions.json"
 
-# Store the current question index and category
-current_question_index = {category: 0 for category in categories}
-current_category = list(categories.keys())[0]
+def read_categories(file_name):
+    with open(file_name) as f:
+        return json.load(f)
 
-def next_question(category=None):
-    global current_question_index, current_category
+categories = read_categories(QUESTIONS_FILE)
 
-    if category:
-        current_category = category
+# Index questions in categories
+questions_index = {category: 0 for category in categories}
+
+def next_question(category):
+    global current_question_index
 
     # Retrieve the questions for the current category
-    category_questions = categories[current_category]
+    questions = categories[category]
 
     # Get the next question
-    question = category_questions[current_question_index[current_category]]
+    question = questions[questions_index[category]]
 
-    current_question_index[current_category] += 1
+    # Move index to the next question
+    questions_index[category] += 1
 
     # If all questions have been asked, reset the index
-    if current_question_index[current_category] == len(category_questions):
-        current_question_index[current_category] = 0
+    if questions_index[category] == len(questions):
+        questions_index[category] = 0
 
     return question
