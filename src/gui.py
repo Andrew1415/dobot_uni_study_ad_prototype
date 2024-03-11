@@ -197,7 +197,7 @@ def main():
         setup_communication()
         setup_window()
     except Exception as e:
-        print(e)
+        raise
     finally:
         close_communication()
 
