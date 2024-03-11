@@ -52,10 +52,14 @@ def request_candy(candy, ready_callback):
     print(f"Requesting new candy {candy}...")
 
     # Creates thread in the background and waits for the robot response
-    _THREAD_WAITING = threading.Thread(target=_wait_candy, args=(req_pin,ready_callback,))
+    _THREAD_WAITING = threading.Thread(target=_communicate, args=(req_pin,ready_callback,))
     _THREAD_WAITING.start()
 
-def _wait_candy(req_pin, ready_callback):
+def _communicate(candy_req_pin, ready_callback):
+    _wait_signal(candy_req_pin, _READY_PIN)
+    return ready_callback()
+
+def _wait_signal(req_pin):
     # Turn on and off candy pin
     GPIO.output(req_pin, GPIO.HIGH)
     time.sleep(DELAY_PIN_TOGGLE)
