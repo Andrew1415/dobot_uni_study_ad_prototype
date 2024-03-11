@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
-from candy import FORTUNA, ANANASAS, request_candy, setup_communication, close_communication
+from communication import FORTUNA, ANANASAS, request_candy, setup_communication, close_communication
 from question_bank import next_question, categories
 import random
 
