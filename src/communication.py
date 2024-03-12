@@ -10,7 +10,7 @@ _PIN_ANANASAS = 35
 _READY_PIN = 33
 DELAY_PIN_TOGGLE = 0.75
 
-DELAY_WAIT = 1
+DELAY_RESP_WAIT = 1
 _THREAD_WAITING: threading.Thread = None
 _STOP_THREAD = False
 
@@ -59,18 +59,17 @@ def _communicate(candy_req_pin, ready_callback):
     _wait_signal(candy_req_pin, _READY_PIN)
     return ready_callback()
 
-def _wait_signal(req_pin):
+def _wait_signal(req_pin, resp_pin):
     # Turn on and off candy pin
     GPIO.output(req_pin, GPIO.HIGH)
     time.sleep(DELAY_PIN_TOGGLE)
     GPIO.output(req_pin, GPIO.LOW)
 
     while not _STOP_THREAD:
-        res = GPIO.input(_READY_PIN)
+        res = GPIO.input(resp_pin)
         # output signal is reversed due to voltage converter
         if res == GPIO.LOW:
-            print("Robot signal received!")
-            return ready_callback()
+            return
 
         # wait time, to reduce CPU usage
-        time.sleep(DELAY_WAIT)
+        time.sleep(DELAY_RESP_WAIT)
