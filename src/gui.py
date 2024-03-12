@@ -31,6 +31,8 @@ def view_incorrect_answer(frame, redirect_view):
 
 @view
 def view_answer_question(frame, category):
+    print(category)
+
     def process_answer(answer, correct_answer):
         if answer == correct_answer:
             view_pick_candy(frame)
@@ -47,8 +49,9 @@ def view_answer_question(frame, category):
     random.shuffle(answers)
 
     for answer in answers:
+        print(answer)
         answer_button = tk.Button(frame, command=lambda ans=answer: process_answer(ans, question_data["correct_answer"]),
-                                  text=answer, font=("Rando", 25), width=2, height=100, borderwidth=0, relief="solid")
+                                  text=answer, font=("Rando", 25), width=100, height=2, borderwidth=0, relief="solid")
         answer_button.pack(pady=5)
 
 @view
@@ -103,7 +106,7 @@ def view_pick_quiz_category(frame):
 
     # Display category buttons
     for category in categories.keys():
-        category_button = tk.Button(frame, command=lambda: view_answer_question(frame, category), text=category, font=("Rando", 25), width=15, height=2, borderwidth=0, relief="solid")
+        category_button = tk.Button(frame, command=lambda c=category: view_answer_question(frame, c), text=category, font=("Rando", 25), width=15, height=2, borderwidth=0, relief="solid")
         category_button.pack(pady=10)
 
 # Loads used images and set up their sizes
