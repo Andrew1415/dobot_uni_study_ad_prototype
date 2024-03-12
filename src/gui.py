@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+
 from PIL import Image, ImageTk
 #from communication import FORTUNA, ANANASAS, request_candy, setup_communication, close_communication
 from question_bank import next_question, categories
@@ -12,32 +13,20 @@ COUNTDOWN_STEP = 1500
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 600
 
-# View wrapper that clears the frame beforehand
-def view(func):
-    def wrapper(frame, *args, **kwargs):
-        for widget in frame.winfo_children():
-            widget.destroy()
+def clear_frame(frame):
+    for widget in frame.winfo_children():
+        widget.destroy()
+    
+def view_incorrect_answer(frame, redirect_func):
+    clear_frame(frame)
 
-        func(frame, *args, **kwargs)
-    return wrapper
-
-@view
-def view_incorrect_answer(frame, redirect_view):
     incorrect_label = tk.Label(frame, text="Atsakymas neteisingas. Bandykite dar kartą.", font=("Rando", 30))
     incorrect_label.pack(pady=20)
 
-    # After two seconds, refresh and return to the quiz
-    frame.after(2000, lambda: redirect_view(frame))
+    frame.after(2000, lambda: redirect_func(frame))
 
-@view
 def view_answer_question(frame, category):
-    print(category)
-
-    def process_answer(answer, correct_answer):
-        if answer == correct_answer:
-            view_pick_candy(frame)
-        else:
-            view_incorrect_answer(redirect_view=view_pick_quiz_category)
+    clear_frame(frame)
 
     question_data = next_question(category)
 
@@ -45,62 +34,71 @@ def view_answer_question(frame, category):
     question_label.pack(pady=20)
 
     answers = [question_data["correct_answer"]] + question_data["incorrect_answers"]
-
     random.shuffle(answers)
 
+    def process_answer(answer):
+        if answer == question_data["correct_answer"]:
+            view_pick_candy(frame)
+        else:
+            view_incorrect_answer(frame, redirect_func=view_pick_quiz_category)
+
     for answer in answers:
-        print(answer)
-        answer_button = tk.Button(frame, command=lambda ans=answer: process_answer(ans, question_data["correct_answer"]),
+        answer_button = tk.Button(frame, command=lambda answer=answer: process_answer(answer),
                                   text=answer, font=("Rando", 25), width=100, height=2, borderwidth=0, relief="solid")
         answer_button.pack(pady=5)
 
-@view
-def view_pick_candy(frame, candy):
-    label = tk.Label(frame, text="Gaudykite saldainį!", font=("Rando", 25))
-    label.pack(pady=20)
+def view_take_candy(frame, candy):
+    clear_frame(frame)
 
-    countdown = tk.Label(frame, font=("Rando", 25))
-    countdown.pack()
+    text_label = tk.Label(frame, text="Gaudykite saldainį!", font=("Rando", 25))
+    text_label.pack(pady=20)
 
-    # Remembers if the robot has returned a signal, to prevent countdown
-    robot_responded = False
+    countdown_label = tk.Label(frame, font=("Rando", 25))
+    countdown_label.pack()
 
-    def on_robot_response():
-        nonlocal robot_responded
-        robot_responded = True
+    counting_task = None
+
+    def after_given_candy():
+        nonlocal counting_task
+
+        # Cancel counting task
+        if counting_task is not None:
+            frame.after_cancel(counting_task)
+            counting_task = None
 
         view_pick_quiz_category(frame)
 
-    def show_count(count):
-        nonlocal robot_responded
-        if robot_responded:
-            # If the robot already responded, do not continue counting
-            return
+    def countdown(count):
+        nonlocal counting_task
+        countdown_label['text'] = count
 
-        countdown.config(text=str(count))
+        if count > 1:
+            counting_task = frame.after(COUNTDOWN_STEP, countdown, count-1)
 
-    #request_candy(candy, on_robot_response)
+    #request_candy(candy, after_response)
 
-    frame.after(1 * COUNTDOWN_STEP, lambda: show_count(3))
-    frame.after(2 * COUNTDOWN_STEP, lambda: show_count(2))
-    frame.after(3 * COUNTDOWN_STEP, lambda: show_count(1))
+    frame.after(2*COUNTDOWN_STEP, after_given_candy)
 
-@view
+    countdown(3)
+
 def view_pick_candy(frame):
+    clear_frame(frame)
+
     question_label = tk.Label(frame, text="Sveikiname! Atsakėte teisingai.", font=("Rando", 30))
     question_label.pack(pady=20)
     question_label = tk.Label(frame, text="Kokio saldainio norite?", font=("Rando", 30))
     question_label.pack(pady=20)
 
     # Display answer buttons
-    fortune_button = tk.Button(frame, command=lambda: view_pick_candy(frame, FORTUNA), width=250, height=250, image=fortuna_img, borderwidth=0, relief="solid")
+    fortune_button = tk.Button(frame, command=lambda: view_take_candy(frame, FORTUNA), width=250, height=250, image=fortuna_img, borderwidth=0, relief="solid")
     fortune_button.pack(side=tk.LEFT, padx=10)
 
-    ananasu_button = tk.Button(frame, command=lambda: view_pick_candy(frame, ANANASAS), width=250, height=250, image=ananasas_img, borderwidth=0, relief="solid")
+    ananasu_button = tk.Button(frame, command=lambda: view_take_candy(frame, ANANASAS), width=250, height=250, image=ananasas_img, borderwidth=0, relief="solid")
     ananasu_button.pack(side=tk.RIGHT, padx=10)
 
-@view
 def view_pick_quiz_category(frame):
+    clear_frame(frame)
+
     category_label = tk.Label(frame, text="Pasirinkite kategoriją", font=("Rando", 35))
     category_label.pack(pady=20)
 
@@ -155,7 +153,6 @@ def setup_window():
     load_logos()
 
     # Setup header of the window
-    global frame_header
     frame_header = tk.Frame(root)
     frame_header.pack(expand=True)
 
@@ -179,7 +176,6 @@ def setup_window():
     exit_button.place(relx=1.0, x=-10, y=10, anchor="ne")
 
     # Setup main content of window
-    global frame_content
     frame_content = tk.Frame(root)
     frame_content.pack(expand=True)
 
