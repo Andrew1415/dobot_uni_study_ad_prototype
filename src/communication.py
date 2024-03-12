@@ -2,11 +2,11 @@ import RPi.GPIO as GPIO
 import time
 import threading
 
-FORTUNA = "fortuna"
-ANANASAS = "ananasas"
+CANDY1 = "candy1"
+CANDY2 = "candy2"
 
-_PIN_FORTUNA = 37
-_PIN_ANANASAS = 35
+_PIN_CANDY1 = 37
+_PIN_CANDY2 = 35
 _READY_PIN = 33
 DELAY_PIN_TOGGLE = 0.75
 
@@ -19,13 +19,13 @@ def setup_communication():
 
     GPIO.setmode(GPIO.BOARD)
 
-    GPIO.setup(_PIN_FORTUNA, GPIO.OUT)
-    GPIO.setup(_PIN_ANANASAS, GPIO.OUT)
+    GPIO.setup(_PIN_CANDY1, GPIO.OUT)
+    GPIO.setup(_PIN_CANDY2, GPIO.OUT)
     GPIO.setup(_READY_PIN, GPIO.IN)
 
     # Initial values
-    GPIO.output(_PIN_FORTUNA, GPIO.LOW)
-    GPIO.output(_PIN_ANANASAS, GPIO.LOW)
+    GPIO.output(_PIN_CANDY1, GPIO.LOW)
+    GPIO.output(_PIN_CANDY2, GPIO.LOW)
     
 def close_communication():
     print("Cleaning up GPIO pins...")
@@ -42,10 +42,10 @@ def request_candy(candy, ready_callback):
         _THREAD_WAITING.join()
         _STOP_THREAD = False
 
-    if candy == FORTUNA:
-        req_pin = _PIN_FORTUNA
-    elif candy == ANANASAS:
-        req_pin = _PIN_ANANASAS
+    if candy == CANDY1:
+        req_pin = _PIN_CANDY1
+    elif candy == CANDY2:
+        req_pin = _PIN_CANDY2
     else:
         raise ValueError("Invalid candy")
 
