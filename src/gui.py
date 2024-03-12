@@ -3,12 +3,12 @@ from tkinter import messagebox
 import os
 
 from PIL import Image, ImageTk
-#from communication import FORTUNA, ANANASAS, request_candy, setup_communication, close_communication
+#from communication import candy1, candy2, request_candy, setup_communication, close_communication
 from .question_bank import next_question, categories
 import random
 
-FORTUNA = "fortuna"
-ANANASAS = "ananasas"
+CANDY1 = "candy1"
+CANDY2 = "candy2"
 
 COUNTDOWN_STEP = 1500
 
@@ -90,13 +90,13 @@ def view_pick_candy(frame):
     question_label = tk.Label(frame, text="Kokio saldainio norite?", font=("Rando", 30))
     question_label.pack(pady=20)
 
-    fortune_button = tk.Button(frame, command=lambda: view_take_candy(frame, FORTUNA), 
-                               width=250, height=250, image=fortuna_img, borderwidth=0, relief="solid")
-    fortune_button.pack(side=tk.LEFT, padx=10)
+    candy1_button = tk.Button(frame, command=lambda: view_take_candy(frame, CANDY1), 
+                               width=250, height=250, image=candy1_img, borderwidth=0, relief="solid")
+    candy1_button.pack(side=tk.LEFT, padx=10)
 
-    ananasu_button = tk.Button(frame, command=lambda: view_take_candy(frame, ANANASAS), 
-                               width=250, height=250, image=ananasas_img, borderwidth=0, relief="solid")
-    ananasu_button.pack(side=tk.RIGHT, padx=10)
+    candy2_button = tk.Button(frame, command=lambda: view_take_candy(frame, CANDY2), 
+                               width=250, height=250, image=candy2_img, borderwidth=0, relief="solid")
+    candy2_button.pack(side=tk.RIGHT, padx=10)
 
 def view_pick_quiz_category(frame):
     clear_frame(frame)
@@ -111,7 +111,7 @@ def view_pick_quiz_category(frame):
 
 # Loads used images and set up their sizes
 def load_logos():
-    global ku_img, conexus_img, fondas_img, fortuna_img, ananasas_img
+    global ku_img, conexus_img, fondas_img, candy1_img, candy2_img
 
     # University logos
     ku_img = Image.open("img/ku.png")
@@ -127,13 +127,13 @@ def load_logos():
     fondas_img = ImageTk.PhotoImage(fondas_img)
 
     # Candy logos
-    fortuna_img = Image.open("img/fortuna.png")
-    fortuna_img = fortuna_img.resize((250, 250))
-    fortuna_img = ImageTk.PhotoImage(fortuna_img)
+    candy1_img = Image.open("img/candy1.png")
+    candy1_img = candy1_img.resize((250, 250))
+    candy1_img = ImageTk.PhotoImage(candy1_img)
 
-    ananasas_img = Image.open("img/ananasas.png")
-    ananasas_img = ananasas_img.resize((250, 250))
-    ananasas_img = ImageTk.PhotoImage(ananasas_img)
+    candy2_img = Image.open("img/candy2.png")
+    candy2_img = candy2_img.resize((250, 250))
+    candy2_img = ImageTk.PhotoImage(candy2_img)
 
 def setup_window():
     print("Creating window...")
