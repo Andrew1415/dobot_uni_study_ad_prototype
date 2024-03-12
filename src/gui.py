@@ -136,6 +136,8 @@ def load_logos():
     ananasas_img = ImageTk.PhotoImage(ananasas_img)
 
 def setup_window():
+    print("Creating window...")
+
     # Setup window
     root = tk.Tk()
     root.title("Saldainiai")
@@ -162,6 +164,7 @@ def setup_window():
     def on_exit():
         result = messagebox.askquestion("Exit", "Ar tikrai norite išeiti?")
         if result == "yes":
+            print("Destroying window...")
             root.destroy()
 
     # Display exit button
