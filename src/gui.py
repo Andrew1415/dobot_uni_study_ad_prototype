@@ -3,12 +3,9 @@ from tkinter import messagebox
 import os
 
 from PIL import Image, ImageTk
-#from communication import candy1, candy2, request_candy, setup_communication, close_communication
+from .communication import CANDY1, CANDY2, request_candy
 from .question_bank import next_question, categories
 import random
-
-CANDY1 = "candy1"
-CANDY2 = "candy2"
 
 COUNTDOWN_STEP = 1500
 
@@ -74,11 +71,7 @@ def view_take_candy(frame, candy):
         if count > 1:
             counting_task = frame.after(COUNTDOWN_STEP, countdown, count-1)
 
-    #request_candy(candy, after_response)
-
-    # TODO: Return back communication
-    frame.after(2*COUNTDOWN_STEP, after_given_candy)
-
+    request_candy(candy, after_given_candy)
     countdown(3)
 
 def view_pick_candy(frame):

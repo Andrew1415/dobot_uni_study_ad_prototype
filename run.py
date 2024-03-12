@@ -1,14 +1,13 @@
-from src import gui
+from src import gui, communication
 
 def main():
     try:
-        #setup_communication()
+        communication.setup_communication()
         gui.setup_window()
     except Exception as e:
         raise
     finally:
-        pass
-        #close_communication()
+        communication.close_communication()
 
 if __name__ == "__main__":
     main()
