@@ -11,8 +11,6 @@ FORTUNA = "fortuna"
 ANANASAS = "ananasas"
 
 COUNTDOWN_STEP = 1500
-WINDOW_WIDTH = 1024
-WINDOW_HEIGHT = 600
 
 def clear_frame(frame):
     for widget in frame.winfo_children():
@@ -143,18 +141,6 @@ def setup_window():
     root.title("Saldainiai")
 
     root.attributes('-fullscreen', True)
-    #root.attributes("-type", "splash")
-
-    # Setup screen resolution (TODO: Is this part required?)
-    """
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
-
-    x_position = (screen_width - WINDOW_WIDTH) // 2
-    y_position = (screen_height - WINDOW_HEIGHT) // 2
-
-    root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x_position}+{y_position}")
-    """
 
     # Load logos used in the application
     load_logos()
