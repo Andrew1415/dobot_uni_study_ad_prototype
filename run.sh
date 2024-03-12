@@ -6,7 +6,9 @@ echo "Changing directory to project root"
 cd $(echo $root_dir)
 
 echo "Loading virtual environment"
-source venv/bin/activate
+if [ -d venv/ ]; then
+    source venv/bin/activate
+fi
 
 echo "Running program"
-python src/gui.py
+python run.py
