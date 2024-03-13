@@ -13,19 +13,19 @@ This github repository covers the _first part_ of this project.
 ![Raspberry Flow Diagram](doc/Candy_Raspberry_Flow_Diagram.drawio.svg)
 
 GPIO Pins used for the project:
-- Out 35 for candy "Ananasas" selection
-- Out 37 for candy "Ananasas" selection
+- Out 35 for candy 1 selection
+- Out 37 for candy 2 selection
 - In 33 for candy drop off feedback signal (synchronisation)
 
 ## Installation
-1. Clone this repository `git clone https://github.com/np425/pi-dobot-gui`
+1. Clone this repository `git clone https://github.com/np425/pi-dobot-gui` and move into it `cd pi-dobot-gui`
 2. Create desktop icon that runs the application **in cloned directory** `bash install.sh`
 
 ## Development
-1. Clone this repository `git clone https://github.com/np425/pi-dobot-gui`
+1. Clone this repository `git clone https://github.com/np425/pi-dobot-gui` and move into it `cd pi-dobot-gui`
 2. Set up and load python virtual environment `python -m venv venv`, then load it via `venv\Scripts\activate` for Windows, or `venv/bin/activate` for Linux (more in https://docs.python.org/3/library/venv.html)
 3. Install required libraries `pip install -r requirements.txt`; Tkinter requires additional package on Linux `tk`: `sudo apt-get install tk`
-4. To run `python src/gui.py`
+4. To run `python run.py`
 
 ## Configuration
 - Pin configuration can be changed in file [candy.py](src/candy.py)
