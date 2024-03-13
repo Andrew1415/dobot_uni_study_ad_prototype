@@ -136,6 +136,9 @@ def setup_window():
 
     root.attributes('-fullscreen', True)
 
+    # For raspberry
+    root.attributes('-type', 'splash')
+
     # Load logos used in the application
     load_logos()
 
