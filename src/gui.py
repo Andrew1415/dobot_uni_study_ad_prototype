@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import messagebox
-import os
 
 from PIL import Image, ImageTk
 from .communication import CANDY1, CANDY2, request_candy
