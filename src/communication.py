@@ -11,6 +11,8 @@ _READY_PIN = 33
 DELAY_PIN_TOGGLE = 0.75
 
 DELAY_RESP_WAIT = 1
+DELAY_TIMEOUT_S = 20
+
 _THREAD_WAITING: threading.Thread = None
 _STOP_THREAD = False
 
@@ -56,23 +58,27 @@ def request_candy(candy, ready_callback):
     _THREAD_WAITING.start()
 
 def _communicate(candy_req_pin, ready_callback):
-    _wait_signal(candy_req_pin, _READY_PIN, 1000)
+    _wait_signal(candy_req_pin, _READY_PIN, DELAY_TIMEOUT_S)
     return ready_callback()
 
 def _wait_signal(req_pin, resp_pin, timeout):
-    time_started = time.time()
-    print(time_started)
-
     # Turn on and off candy pin
     GPIO.output(req_pin, GPIO.HIGH)
     time.sleep(DELAY_PIN_TOGGLE)
     GPIO.output(req_pin, GPIO.LOW)
 
-    while not _STOP_THREAD and time.time() > time_started + timeout:
+    # Used for timeout
+    time_started = time.time()
+
+    while not _STOP_THREAD:
+        time_current = time.time()
+        if time_current > time_started + timeout:
+            break
+
         res = GPIO.input(resp_pin)
         # output signal is reversed due to voltage converter
         if res == GPIO.LOW:
-            return
+            break
 
         # wait time, to reduce CPU usage
         time.sleep(DELAY_RESP_WAIT)
