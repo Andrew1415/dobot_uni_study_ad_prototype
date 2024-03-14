@@ -52,9 +52,9 @@ def request_candy(candy, ready_callback):
         return
 
     if candy == CANDY1:
-        req_pin = _PIN_CANDY1
+        req_pin = _PIN_OUT_CANDY1
     elif candy == CANDY2:
-        req_pin = _PIN_CANDY2
+        req_pin = _PIN_OUT_CANDY2
     else:
         raise ValueError(f"Invalid request, candy:{candy}")
 
