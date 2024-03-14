@@ -20,6 +20,10 @@ DELAY_TIMEOUT_S = 20
 # Thread for processing
 _THREAD_WAITING_SIGNAL = None
 
+# Return values for requests
+RESPONSE_TIMEOUT = 0
+RESPONSE_SUCCESS = 1
+
 def setup_communication():
     print("Setting up GPIO pins...")
 
@@ -59,8 +63,8 @@ def request_candy(candy, ready_callback):
 
 def _communicate(candy_req_pin, ready_callback):
     print('Waiting for candy...')
-    _wait_signal(candy_req_pin, _PIN_IN_CANDY_DONE, DELAY_TIMEOUT_S)
-    return ready_callback()
+    response = _wait_signal(candy_req_pin, _PIN_IN_CANDY_DONE, DELAY_TIMEOUT_S)
+    return ready_callback(response)
 
 def _wait_signal(req_pin, resp_pin, timeout_s):
     # Turn on and off pin
@@ -77,13 +81,13 @@ def _wait_signal(req_pin, resp_pin, timeout_s):
         time_current = time.time()
         if time_current > time_started + timeout_s:
             print(f'Response pin:{resp_pin} timed out...')
-            break
+            return RESPONSE_TIMEOUT
 
         resp = GPIO.input(resp_pin)
         # output signal is reversed due to voltage converter
         if resp == GPIO.LOW:
             print(f'Response received from pin:{resp_pin}...')
-            break
+            return RESPONSE_SUCCESS
 
         # wait time, to reduce CPU usage
         time.sleep(DELAY_RESP_WAIT)

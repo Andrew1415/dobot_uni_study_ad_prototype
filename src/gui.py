@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 from PIL import Image, ImageTk
-from .communication import CANDY1, CANDY2, request_candy
+from .communication import CANDY1, CANDY2, request_candy, RESPONSE_SUCCESS, RESPONSE_TIMEOUT
 from .question_bank import next_question, categories
 import random
 
@@ -53,7 +53,7 @@ def view_take_candy(frame, candy):
 
     counting_task = None
 
-    def after_given_candy():
+    def after_given_candy(response):
         nonlocal counting_task
 
         # Cancel counting task
