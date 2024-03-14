@@ -71,7 +71,7 @@ def _wait_signal(req_pin, resp_pin, timeout_s):
     # Turn on and off pin
     logging.info(f'Toggling request pin:{req_pin}...')
     GPIO.output(req_pin, GPIO.HIGH)
-    time.sleep(DELAY_PIN_TOGGLE)
+    time.sleep(DELAY_PIN_TOGGLE_S)
     GPIO.output(req_pin, GPIO.LOW)
 
     time_started = time.time()
@@ -91,4 +91,4 @@ def _wait_signal(req_pin, resp_pin, timeout_s):
             return RESPONSE_SUCCESS
 
         # wait time, to reduce CPU usage
-        time.sleep(DELAY_RESP_WAIT)
+        time.sleep(DELAY_RESP_WAIT_S)
