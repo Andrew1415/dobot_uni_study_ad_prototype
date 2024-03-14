@@ -69,9 +69,10 @@ def _communicate(candy_req_pin, ready_callback):
 
 def _wait_signal(req_pin, resp_pin, timeout_s):
     # Turn on and off pin
-    logging.info(f'Toggling request pin:{req_pin}...')
+    logging.info(f'Toggling request pin:{req_pin} ON...')
     GPIO.output(req_pin, GPIO.HIGH)
     time.sleep(DELAY_PIN_TOGGLE_S)
+    logging.info(f'Toggling request pin:{req_pin} OFF...')
     GPIO.output(req_pin, GPIO.LOW)
 
     time_started = time.time()
@@ -81,13 +82,13 @@ def _wait_signal(req_pin, resp_pin, timeout_s):
         # Handles timeout
         time_current = time.time()
         if time_current > time_started + timeout_s:
-            logging.warning(f'Response pin:{resp_pin} timed out...')
+            logging.warning(f'Response pin:{resp_pin} timed out!')
             return RESPONSE_TIMEOUT
 
         resp = GPIO.input(resp_pin)
         # output signal is reversed due to voltage converter
         if resp == GPIO.LOW:
-            logging.info(f'Response received from pin:{resp_pin}...')
+            logging.info(f'Response pin:{resp_pin} success...')
             return RESPONSE_SUCCESS
 
         # wait time, to reduce CPU usage
