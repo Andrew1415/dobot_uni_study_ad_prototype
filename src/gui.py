@@ -2,9 +2,12 @@ import tkinter as tk
 from tkinter import messagebox
 
 from PIL import Image, ImageTk
+
+import random
+import logging
+
 from .communication import CANDY1, CANDY2, request_candy, RESPONSE_SUCCESS, RESPONSE_TIMEOUT
 from .question_bank import next_question, categories
-import random
 
 COUNTDOWN_STEP = 1500
 
@@ -128,7 +131,7 @@ def load_logos():
     candy2_img = ImageTk.PhotoImage(candy2_img)
 
 def setup_window():
-    print("Creating window...")
+    logging.info("Creating window...")
 
     # Setup window
     root = tk.Tk()
@@ -159,7 +162,7 @@ def setup_window():
     def on_exit():
         result = messagebox.askquestion("Exit", "Ar tikrai norite išeiti?")
         if result == "yes":
-            print("Destroying window...")
+            logging.info('Destroying window...')
             root.destroy()
 
     # Display exit button

@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 import threading
+import logging
 
 # Candy selections
 CANDY1 = 0
@@ -25,7 +26,7 @@ RESPONSE_TIMEOUT = 0
 RESPONSE_SUCCESS = 1
 
 def setup_communication():
-    print("Setting up GPIO pins...")
+    logging.info("Setting up GPIO pins...")
 
     GPIO.setmode(GPIO.BOARD)
 
@@ -39,7 +40,7 @@ def setup_communication():
     GPIO.output(_PIN_OUT_CANDY2, GPIO.LOW)
     
 def close_communication():
-    print("Cleaning up GPIO pins...")
+    logging.info("Cleaning up GPIO pins...")
 
     GPIO.cleanup()
 
@@ -47,7 +48,7 @@ def request_candy(candy, ready_callback):
     global _THREAD_WAITING_SIGNAL, _STOP_THREAD
     if _THREAD_WAITING_SIGNAL is not None and _THREAD_WAITING_SIGNAL.is_alive():
         # Waits for the current thread to stop
-        print("Current candy request has not been finished, ignoring request")
+        logging.warning("Current candy request has not been finished, ignoring request!")
         return
 
     if candy == CANDY1:
@@ -55,38 +56,38 @@ def request_candy(candy, ready_callback):
     elif candy == CANDY2:
         req_pin = _PIN_CANDY2
     else:
-        raise ValueError("Invalid candy")
+        raise ValueError(f"Invalid request, candy:{candy}")
 
     # Creates thread in the background and waits for the robot response
     _THREAD_WAITING_SIGNAL = threading.Thread(target=_communicate, args=(req_pin,ready_callback), daemon=True)
     _THREAD_WAITING_SIGNAL.start()
 
 def _communicate(candy_req_pin, ready_callback):
-    print('Waiting for candy...')
+    logging.info('Waiting for candy...')
     response = _wait_signal(candy_req_pin, _PIN_IN_CANDY_DONE, DELAY_TIMEOUT_S)
     return ready_callback(response)
 
 def _wait_signal(req_pin, resp_pin, timeout_s):
     # Turn on and off pin
-    print(f'Toggling request pin:{req_pin}...')
+    logging.info(f'Toggling request pin:{req_pin}...')
     GPIO.output(req_pin, GPIO.HIGH)
     time.sleep(DELAY_PIN_TOGGLE)
     GPIO.output(req_pin, GPIO.LOW)
 
     time_started = time.time()
-    print(f'Waiting response pin:{resp_pin}...')
+    logging.info(f'Waiting response pin:{resp_pin}...')
 
     while True:
         # Handles timeout
         time_current = time.time()
         if time_current > time_started + timeout_s:
-            print(f'Response pin:{resp_pin} timed out...')
+            logging.warning(f'Response pin:{resp_pin} timed out...')
             return RESPONSE_TIMEOUT
 
         resp = GPIO.input(resp_pin)
         # output signal is reversed due to voltage converter
         if resp == GPIO.LOW:
-            print(f'Response received from pin:{resp_pin}...')
+            logging.info(f'Response received from pin:{resp_pin}...')
             return RESPONSE_SUCCESS
 
         # wait time, to reduce CPU usage
