@@ -84,7 +84,7 @@ def _wait_for_signals(req_pins, resp_pins, timeout_s):
 
     for req_pin in req_pins:
         logging.info(f'Toggling request pin:{req_pin} OFF...')
-        GPIO.output(req_pin, GPIO.OFF)
+        GPIO.output(req_pin, GPIO.LOW)
 
     for resp_pin in resp_pins:
         logging.info(f'Waiting response pin:{resp_pin}...')
