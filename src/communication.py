@@ -9,12 +9,12 @@ CANDY2 = 1
 
 # Pin configuration
 _PIN_IN_CANDY_DONE = 33
+_PIN_IN_LEAFLET_DONE = 29
 
 _PIN_OUT_CANDY1 = 37
 _PIN_OUT_CANDY2 = 35
-
 _PIN_OUT_LEAFLET = 31
-_PIN_IN_LEAFLET_DONE = 29
+
 
 # Delay configuration
 DELAY_PIN_TOGGLE_S = 0.75
@@ -65,41 +65,49 @@ def request_prize(candy, ready_callback):
     else:
         raise ValueError(f"Invalid request, candy:{candy}")
 
-    # Creates thread in the background and waits for the robot response
+    # Waits for robot response in the background
     _THREAD_WAITING_SIGNAL = threading.Thread(target=_communicate, args=(req_pin,ready_callback), daemon=True)
     _THREAD_WAITING_SIGNAL.start()
 
 def _communicate(candy_req_pin, ready_callback):
-    logging.info('Waiting for candy...')
-    response = _wait_signal(candy_req_pin, _PIN_IN_CANDY_DONE, DELAY_TIMEOUT_S)
-    if response == RESPONSE_TIMEOUT:
-        return ready_callback(response)
-    response = _wait_signal(_PIN_OUT_LEAFLET, _PIN_IN_LEAFLET_DONE, DELAY_TIMEOUT_S)
+    logging.info('Waiting for candy and leaflet...')
+    response = _wait_signal([candy_req_pin, _PIN_OUT_LEAFLET], [_PIN_IN_CANDY_DONE, _PIN_IN_LEAFLET_DONE], DELAY_TIMEOUT_S)
     return ready_callback(response)
 
-def _wait_signal(req_pin, resp_pin, timeout_s):
+def _wait_for_signals(req_pins, resp_pins, timeout_s):
     # Turn on and off pin
-    logging.info(f'Toggling request pin:{req_pin} ON...')
-    GPIO.output(req_pin, GPIO.HIGH)
+    for req_pin in req_pins:
+        logging.info(f'Toggling request pin:{req_pin} ON...')
+        GPIO.output(req_pin, GPIO.HIGH)
+
     time.sleep(DELAY_PIN_TOGGLE_S)
-    logging.info(f'Toggling request pin:{req_pin} OFF...')
-    GPIO.output(req_pin, GPIO.LOW)
 
-    time_started = time.time()
-    logging.info(f'Waiting response pin:{resp_pin}...')
+    for req_pin in req_pins:
+        logging.info(f'Toggling request pin:{req_pin} OFF...')
+        GPIO.output(req_pin, GPIO.OFF)
 
-    while True:
-        # Handles timeout
+    for resp_pin in resp_pins:
+        logging.info(f'Waiting response pin:{resp_pin}...')
+
+    not_responded = set(resp_pins)
+
+    while not_responded:
+        # Handle timeout
         time_current = time.time()
         if time_current > time_started + timeout_s:
-            logging.warning(f'Response pin:{resp_pin} timed out!')
+            for resp_pin in not_responded:
+                logging.warning(f'Response pin:{resp_pin} timed out!')
             return RESPONSE_TIMEOUT
 
-        resp = GPIO.input(resp_pin)
-        # output signal is reversed due to voltage converter
-        if resp == GPIO.LOW:
-            logging.info(f'Response pin:{resp_pin} success...')
-            return RESPONSE_SUCCESS
+        signals = [(resp_pin, GPIO.input(resp_pin)) for resp_pin in not_responded]
+        for resp_pin, signal in inputs:
+            # output signal is reversed due to voltage converter
+            if signal == GPIO.LOW:
+                logging.info(f'Response pin:{resp_pin} success...')
+                not_responded.remove(resp_pin)
 
         # wait time, to reduce CPU usage
         time.sleep(DELAY_RESP_WAIT_S)
+
+    return RESPONSE_SUCCESS
+
