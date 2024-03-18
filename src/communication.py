@@ -101,7 +101,7 @@ def _wait_for_signals(req_pins, resp_pins, timeout_s):
             return RESPONSE_TIMEOUT
 
         signals = [(resp_pin, GPIO.input(resp_pin)) for resp_pin in not_responded]
-        for resp_pin, signal in inputs:
+        for resp_pin, signal in signals:
             # output signal is reversed due to voltage converter
             if signal == GPIO.LOW:
                 logging.info(f'Response pin:{resp_pin} success...')
