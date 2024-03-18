@@ -71,7 +71,7 @@ def request_prize(candy, ready_callback):
 
 def _communicate(candy_req_pin, ready_callback):
     logging.info('Waiting for candy and leaflet...')
-    response = _wait_signal([candy_req_pin, _PIN_OUT_LEAFLET], [_PIN_IN_CANDY_DONE, _PIN_IN_LEAFLET_DONE], DELAY_TIMEOUT_S)
+    response = _wait_for_signals([candy_req_pin, _PIN_OUT_LEAFLET], [_PIN_IN_CANDY_DONE, _PIN_IN_LEAFLET_DONE], DELAY_TIMEOUT_S)
     return ready_callback(response)
 
 def _wait_for_signals(req_pins, resp_pins, timeout_s):
