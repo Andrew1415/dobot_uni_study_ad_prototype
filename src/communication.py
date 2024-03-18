@@ -89,6 +89,7 @@ def _wait_for_signals(req_pins, resp_pins, timeout_s):
     for resp_pin in resp_pins:
         logging.info(f'Waiting response pin:{resp_pin}...')
 
+    time_started = time.time()
     not_responded = set(resp_pins)
 
     while not_responded:
