@@ -1,84 +1,95 @@
 import RPi.GPIO as GPIO
 import time
 import threading
+import logging
 
-CANDY1 = "candy1"
-CANDY2 = "candy2"
+# Candy selections
+CANDY1 = 0
+CANDY2 = 1
 
-_PIN_CANDY1 = 37
-_PIN_CANDY2 = 35
-_READY_PIN = 33
-DELAY_PIN_TOGGLE = 0.75
+# Pin configuration
+_PIN_IN_CANDY_DONE = 33
 
-DELAY_RESP_WAIT = 1
+_PIN_OUT_CANDY1 = 37
+_PIN_OUT_CANDY2 = 35
+
+# Delay configuration
+DELAY_PIN_TOGGLE_S = 0.75
+DELAY_RESP_WAIT_S = 1
 DELAY_TIMEOUT_S = 20
 
-_THREAD_WAITING: threading.Thread = None
-_STOP_THREAD = False
+# Thread for processing
+_THREAD_WAITING_SIGNAL = None
+
+# Return values for requests
+RESPONSE_TIMEOUT = 0
+RESPONSE_SUCCESS = 1
 
 def setup_communication():
-    print("Setting up GPIO pins...")
+    logging.info("Setting up GPIO pins...")
 
     GPIO.setmode(GPIO.BOARD)
 
-    GPIO.setup(_PIN_CANDY1, GPIO.OUT)
-    GPIO.setup(_PIN_CANDY2, GPIO.OUT)
-    GPIO.setup(_READY_PIN, GPIO.IN)
+    # Pin directions
+    GPIO.setup(_PIN_OUT_CANDY1, GPIO.OUT)
+    GPIO.setup(_PIN_OUT_CANDY2, GPIO.OUT)
+    GPIO.setup(_PIN_IN_CANDY_DONE, GPIO.IN)
 
     # Initial values
-    GPIO.output(_PIN_CANDY1, GPIO.LOW)
-    GPIO.output(_PIN_CANDY2, GPIO.LOW)
+    GPIO.output(_PIN_OUT_CANDY1, GPIO.LOW)
+    GPIO.output(_PIN_OUT_CANDY2, GPIO.LOW)
     
 def close_communication():
-    print("Cleaning up GPIO pins...")
+    logging.info("Cleaning up GPIO pins...")
 
     GPIO.cleanup()
 
 def request_candy(candy, ready_callback):
-    # Terminate current thread if there is one running
-    global _THREAD_WAITING, _STOP_THREAD
-    if _THREAD_WAITING is not None and _THREAD_WAITING.is_alive():
+    global _THREAD_WAITING_SIGNAL, _STOP_THREAD
+    if _THREAD_WAITING_SIGNAL is not None and _THREAD_WAITING_SIGNAL.is_alive():
         # Waits for the current thread to stop
-        print("Current candy request has not been finished, aborting the current one")
-        _STOP_THREAD = True
-        _THREAD_WAITING.join()
-        _STOP_THREAD = False
+        logging.warning("Current candy request has not been finished, ignoring request!")
+        return
 
     if candy == CANDY1:
-        req_pin = _PIN_CANDY1
+        req_pin = _PIN_OUT_CANDY1
     elif candy == CANDY2:
-        req_pin = _PIN_CANDY2
+        req_pin = _PIN_OUT_CANDY2
     else:
-        raise ValueError("Invalid candy")
-
-    print(f"Requesting new candy {candy}...")
+        raise ValueError(f"Invalid request, candy:{candy}")
 
     # Creates thread in the background and waits for the robot response
-    _THREAD_WAITING = threading.Thread(target=_communicate, args=(req_pin,ready_callback,))
-    _THREAD_WAITING.start()
+    _THREAD_WAITING_SIGNAL = threading.Thread(target=_communicate, args=(req_pin,ready_callback), daemon=True)
+    _THREAD_WAITING_SIGNAL.start()
 
 def _communicate(candy_req_pin, ready_callback):
-    _wait_signal(candy_req_pin, _READY_PIN, DELAY_TIMEOUT_S)
-    return ready_callback()
+    logging.info('Waiting for candy...')
+    response = _wait_signal(candy_req_pin, _PIN_IN_CANDY_DONE, DELAY_TIMEOUT_S)
+    return ready_callback(response)
 
-def _wait_signal(req_pin, resp_pin, timeout):
-    # Turn on and off candy pin
+def _wait_signal(req_pin, resp_pin, timeout_s):
+    # Turn on and off pin
+    logging.info(f'Toggling request pin:{req_pin} ON...')
     GPIO.output(req_pin, GPIO.HIGH)
-    time.sleep(DELAY_PIN_TOGGLE)
+    time.sleep(DELAY_PIN_TOGGLE_S)
+    logging.info(f'Toggling request pin:{req_pin} OFF...')
     GPIO.output(req_pin, GPIO.LOW)
 
-    # Used for timeout
     time_started = time.time()
+    logging.info(f'Waiting response pin:{resp_pin}...')
 
-    while not _STOP_THREAD:
+    while True:
+        # Handles timeout
         time_current = time.time()
-        if time_current > time_started + timeout:
-            break
+        if time_current > time_started + timeout_s:
+            logging.warning(f'Response pin:{resp_pin} timed out!')
+            return RESPONSE_TIMEOUT
 
-        res = GPIO.input(resp_pin)
+        resp = GPIO.input(resp_pin)
         # output signal is reversed due to voltage converter
-        if res == GPIO.LOW:
-            break
+        if resp == GPIO.LOW:
+            logging.info(f'Response pin:{resp_pin} success...')
+            return RESPONSE_SUCCESS
 
         # wait time, to reduce CPU usage
-        time.sleep(DELAY_RESP_WAIT)
+        time.sleep(DELAY_RESP_WAIT_S)
