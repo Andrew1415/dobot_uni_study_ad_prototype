@@ -2,7 +2,7 @@ from src import gui, communication
 import logging
 
 def main():
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(format='%(asctime)s %(levelname)s:%(name)s:%(message)s', datefmt='%x %X', level=logging.INFO)
 
     try:
         communication.setup_communication()
