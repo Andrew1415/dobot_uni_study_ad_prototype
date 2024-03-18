@@ -13,6 +13,9 @@ _PIN_IN_CANDY_DONE = 33
 _PIN_OUT_CANDY1 = 37
 _PIN_OUT_CANDY2 = 35
 
+_PIN_OUT_LEAFLET = 31
+_PIN_IN_LEAFLET_DONE = 29
+
 # Delay configuration
 DELAY_PIN_TOGGLE_S = 0.75
 DELAY_RESP_WAIT_S = 1
@@ -34,10 +37,14 @@ def setup_communication():
     GPIO.setup(_PIN_OUT_CANDY1, GPIO.OUT)
     GPIO.setup(_PIN_OUT_CANDY2, GPIO.OUT)
     GPIO.setup(_PIN_IN_CANDY_DONE, GPIO.IN)
+    GPIO.setup(_PIN_OUT_LEAFLET, GPIO.OUT)
+    GPIO.setup(_PIN_IN_LEAFLET_DONE, GPIO.IN)
 
     # Initial values
     GPIO.output(_PIN_OUT_CANDY1, GPIO.LOW)
     GPIO.output(_PIN_OUT_CANDY2, GPIO.LOW)
+    GPIO.output(_PIN_OUT_LEAFLET, GPIO.LOW)
+
     
 def close_communication():
     logging.info("Cleaning up GPIO pins...")
@@ -65,6 +72,9 @@ def request_candy(candy, ready_callback):
 def _communicate(candy_req_pin, ready_callback):
     logging.info('Waiting for candy...')
     response = _wait_signal(candy_req_pin, _PIN_IN_CANDY_DONE, DELAY_TIMEOUT_S)
+    if response == RESPONSE_TIMEOUT:
+        return ready_callback(response)
+    response = _wait_signal(_PIN_OUT_LEAFLET, _PIN_IN_LEAFLET_DONE, DELAY_TIMEOUT_S)
     return ready_callback(response)
 
 def _wait_signal(req_pin, resp_pin, timeout_s):
