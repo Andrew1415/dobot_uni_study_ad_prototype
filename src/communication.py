@@ -51,7 +51,7 @@ def close_communication():
 
     GPIO.cleanup()
 
-def request_candy(candy, ready_callback):
+def request_prize(candy, ready_callback):
     global _THREAD_WAITING_SIGNAL, _STOP_THREAD
     if _THREAD_WAITING_SIGNAL is not None and _THREAD_WAITING_SIGNAL.is_alive():
         # Waits for the current thread to stop
