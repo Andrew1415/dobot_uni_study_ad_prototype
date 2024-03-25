@@ -6,7 +6,7 @@ from PIL import Image, ImageTk
 import random
 import logging
 
-from .communication import CANDY1, CANDY2, request_candy, RESPONSE_SUCCESS, RESPONSE_TIMEOUT
+from .communication import CANDY1, CANDY2, request_prize, RESPONSE_SUCCESS, RESPONSE_TIMEOUT
 from .question_bank import next_question, categories
 
 COUNTDOWN_STEP = 1500
@@ -56,7 +56,7 @@ def view_take_candy(frame, candy):
 
     counting_task = None
 
-    def after_given_candy(response):
+    def after_given_prize(response):
         nonlocal counting_task
 
         # Cancel counting task
@@ -73,7 +73,7 @@ def view_take_candy(frame, candy):
         if count > 1:
             counting_task = frame.after(COUNTDOWN_STEP, countdown, count-1)
 
-    request_candy(candy, after_given_candy)
+    request_prize(candy, after_given_prize)
     countdown(3)
 
 def view_pick_candy(frame):
