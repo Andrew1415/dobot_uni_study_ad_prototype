@@ -19,7 +19,7 @@ _PIN_OUT_LEAFLET = 31
 # Delay configuration
 DELAY_PIN_TOGGLE_S = 0.75
 DELAY_RESP_WAIT_S = 1
-DELAY_TIMEOUT_S = 30
+DELAY_TIMEOUT_S = 25
 
 # Thread for processing
 _THREAD_WAITING_SIGNAL = None
