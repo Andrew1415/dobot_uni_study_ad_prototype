@@ -4,7 +4,7 @@ Candy Robot project uses a robotic hand to pick up a user-selected candy from fi
 
 This project consists of 3 parts:
 1. [Graphical user interface implemented in Raspberry PI.](https://github.com/np425/pi-dobot-gui)
-2. [Candy movement robotic hand Dobot MG400 robotic hand.](https://github.com/aidasgau/dobotmg400-candypicker)
+2. [Candy movement robotic hand Dobot MG400.](https://github.com/aidasgau/dobotmg400-candypicker)
 3. [Leaflet movement robotic hand Dobot M1 PRO.](https://github.com/aidasgau/m1pro-leafletpicker)
 3. Electrical wiring connecting both components and providing communication.
 
