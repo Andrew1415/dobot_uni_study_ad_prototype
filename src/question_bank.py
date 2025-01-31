@@ -2,7 +2,7 @@ import json
 
 QUESTIONS_FILE = "questions.json"
 
-def read_categories(file_name):
+def read_categories(file_name) -> dict:
     with open(file_name) as f:
         return json.load(f)
 

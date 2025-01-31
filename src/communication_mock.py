@@ -22,7 +22,7 @@ def setup_communication():
 def close_communication():
     logging.info("Mock: Cleaning up communication (no actual GPIO cleanup).")
 
-def request_prize(candy, ready_callback):
+def request_prize(candy, leaflet, ready_callback):
     global _THREAD_WAITING_SIGNAL
     if _THREAD_WAITING_SIGNAL is not None and _THREAD_WAITING_SIGNAL.is_alive():
         logging.warning("Mock: Current candy request has not been finished, ignoring request!")
