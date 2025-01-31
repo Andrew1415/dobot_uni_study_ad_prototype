@@ -42,7 +42,7 @@ def view_answer_question(frame, category):
 
     for answer in answers:
         answer_button = tk.Button(frame, command=lambda answer=answer: process_answer(answer),
-                                  text=answer, font=("Rando", 25), width=100, height=2, borderwidth=0, relief="solid")
+                                  text=answer, font=("Rando", 25), width=100, height=2, borderwidth=1, relief="solid")
         answer_button.pack(pady=5)
 
 def view_take_candy(frame, candy):
@@ -96,13 +96,27 @@ def view_pick_candy(frame):
 def view_pick_quiz_category(frame):
     clear_frame(frame)
 
-    category_label = tk.Label(frame, text="Pasirinkite kategoriją", font=("Rando", 35))
-    category_label.pack(pady=20)
+    category_label = tk.Label(frame, text="Pasirinkite kategoriją", font=("Rando", 25))
+    category_label.pack(pady=2)
+    
+    category_frame = tk.Frame(frame)
+    category_frame.pack()
 
+    row, col = 0, 0
     for category in categories.keys():
-        category_button = tk.Button(frame, command=lambda category=category: view_answer_question(frame, category), 
-                                    text=category, font=("Rando", 25), width=15, height=2, borderwidth=0, relief="solid")
-        category_button.pack(pady=10)
+        category_button = tk.Button(category_frame, command=lambda category=category: view_answer_question(frame, category), 
+                                    text=category, font=("Rando", 15), width=25, height=2, borderwidth=1, relief="solid")
+        category_button.grid(row=row, column=col, padx=5, pady=5)
+        
+        col += 1
+        if col > 1:  # Two columns
+            col = 0
+            row += 1
+
+    #for category in categories.keys():
+     #   category_button = tk.Button(frame, command=lambda category=category: view_answer_question(frame, category), 
+     #                               text=category, font=("Rando", 25), width=15, height=2, borderwidth=0, relief="solid")
+     #   category_button.pack(pady=10)
 
 # Loads used images and set up their sizes
 def load_logos():
@@ -110,7 +124,7 @@ def load_logos():
 
     # University logos
     ku_img = Image.open("img/ku.png")
-    ku_img = ku_img.resize((250, 80))
+    ku_img = ku_img.resize((188, 50))
     ku_img = ImageTk.PhotoImage(ku_img)
 
     conexus_img = Image.open("img/conexus.png")
@@ -151,13 +165,13 @@ def setup_window():
 
     # Display logos in the header
     conexus_logo = tk.Label(frame_header, height=120, image=conexus_img, borderwidth=0, relief="solid")
-    conexus_logo.grid(row = 0, column = 0, padx=10)
+    conexus_logo.grid(row = 0, column = 0, padx=1)
 
     ku_logo = tk.Label(frame_header, height=120, image=ku_img, borderwidth=0, relief="solid")
-    ku_logo.grid(row = 0, column = 1, padx=10)
+    ku_logo.grid(row = 0, column = 1, padx=1)
 
     fondas_logo = tk.Label(frame_header, height=120, image=fondas_img, borderwidth=0, relief="solid")
-    fondas_logo.grid(row = 0, column = 2, padx=10)
+    fondas_logo.grid(row = 0, column = 2, padx=1)
 
     def on_exit():
         result = messagebox.askquestion("Exit", "Ar tikrai norite išeiti?")
@@ -166,7 +180,7 @@ def setup_window():
             root.destroy()
 
     # Display exit button
-    exit_button = tk.Button(root, text="X", font=("Rando", 20), command=on_exit)
+    exit_button = tk.Button(root, text="X", font=("Rando", 20), command=on_exit, fg="white", bg="red")
     exit_button.place(relx=1.0, x=-10, y=10, anchor="ne")
 
     # Setup main content of window
