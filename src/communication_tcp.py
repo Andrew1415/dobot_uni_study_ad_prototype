@@ -2,22 +2,23 @@ import socket
 import threading
 import logging
 from typing import Callable
+from .question_bank import categories, update_statistics
 
 CANDY1: int = 0
 CANDY2: int = 1
 
 RESPONSE_TIMEOUT: int = 0
 RESPONSE_SUCCESS: int = 1
-TCP_TIMEOUT_S: int = 5
+TCP_TIMEOUT_S: int = 30
 
-# IP_CANDY_ROBOT: str = "192.168.1.6"
-IP_CANDY_ROBOT: str = "127.192.1.6"
+IP_CANDY_ROBOT: str = "192.168.2.6"
+# IP_CANDY_ROBOT: str = "127.192.1.6"
 PORT_CANDY_ROBOT: int = 6001
 _CANDY_SOCKET: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 _CANDY_SOCKET.settimeout(TCP_TIMEOUT_S)
 
 # IP_LEAFLET_ROBOT: str = "192.168.1.7"
-IP_LEAFLET_ROBOT: str = "127.192.1.7"
+IP_LEAFLET_ROBOT: str = "192.168.2.7"
 PORT_LEAFLET_ROBOT: int = 6001
 _LEAFLET_SOCKET: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 _LEAFLET_SOCKET.settimeout(TCP_TIMEOUT_S)
@@ -52,13 +53,15 @@ def close_communication():
     _LEAFLET_SOCKET.close()
 
 
-def request_prize(candy: int, leaflet: int, ready_callback: Callable[[int], None]):
+def request_prize(candy: int, category: str, ready_callback: Callable[[int], None]):
     if _EXECUTING_EVENT.is_set():
         logging.warning("Current candy request has not been finished, ignoring request!")
         return
     
     _EXECUTING_EVENT.set()
     result = RESPONSE_TIMEOUT  
+
+    leaflet = int(list(categories.keys()).index(category))
 
     try:
         candy_command = str(candy)
@@ -85,6 +88,7 @@ def request_prize(candy: int, leaflet: int, ready_callback: Callable[[int], None
         leaflet_thread.join()
 
         result = RESPONSE_SUCCESS if candy_result and leaflet_result else RESPONSE_TIMEOUT
+        update_statistics(category)
     finally:
         _EXECUTING_EVENT.clear()
 
@@ -99,16 +103,14 @@ def issue_command(robot_socket: socket.socket, ip: str, port: int, command: str)
         response = robot_socket.recv(1024)
         if response:
             decoded_response = response.decode("utf-8").strip()
-            logging.info(f"Received TCP response: {decoded_response}")
-            return decoded_response == "success"
+            logging.info(f"Received TCP response from {ip}:{port} = {decoded_response}")
+            return True
         else:
             logging.warning("Received no TCP response")
     except socket.error as e:
         logging.error(
             f"No connection to TCP robot hand {ip}:{port}, attempting reconnect! Error: {e}"
         )
-        if _connect(robot_socket, ip, port):
-            return issue_command(robot_socket, ip, port, command)
 
     return False
 

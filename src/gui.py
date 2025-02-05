@@ -43,41 +43,39 @@ def view_answer_question(frame, category):
 
     for answer in answers:
         answer_button = tk.Button(frame, command=lambda answer=answer: process_answer(answer),
-                                  text=answer, font=("Rando", 25), width=100, height=2, borderwidth=1, relief="solid")
+                                  text=answer, font=("Rando", 15), width=100, height=2, borderwidth=1, relief="solid")
         answer_button.pack(pady=5)
 
 def view_take_candy(frame, candy, category):
     clear_frame(frame)
 
-    text_label = tk.Label(frame, text="Gaudykite saldainį!", font=("Rando", 25))
+    text_label = tk.Label(frame, text="Pasiimkite saldaini ir kortele 😄", font=("Rando", 25))
     text_label.pack(pady=20)
 
-    countdown_label = tk.Label(frame, font=("Rando", 25))
+    countdown_label = tk.Label(frame, font=("Rando", 25), text="Atsargiai geras robotas, bet turi silpnus nervus")
     countdown_label.pack()
 
-    counting_task = None
+    # counting_task = None
 
     def after_given_prize(response):
-        nonlocal counting_task
+        # nonlocal counting_task
 
-        # Cancel counting task
-        if counting_task is not None:
-            frame.after_cancel(counting_task)
-            counting_task = None
+        # # Cancel counting task
+        # if counting_task is not None:
+        #     frame.after_cancel(counting_task)
+        #     counting_task = None
 
         view_pick_quiz_category(frame)
 
-    def countdown(count):
-        nonlocal counting_task
-        countdown_label['text'] = count
+    # def countdown(count):
+    #     nonlocal counting_task
+    #     countdown_label['text'] = count
 
-        if count > 1:
-            counting_task = frame.after(COUNTDOWN_STEP, countdown, count-1)
+    #     if count > 1:
+    #         counting_task = frame.after(COUNTDOWN_STEP, countdown, count-1)
 
-    category_index = int(list(categories.keys()).index(category))
-
-    threading.Thread(target=request_prize, args=(candy, category_index, after_given_prize), daemon=True).start()
-    countdown(3)
+    threading.Thread(target=request_prize, args=(candy, category, after_given_prize), daemon=True).start()
+    # countdown(3)
 
 def view_pick_candy(frame, category):
     clear_frame(frame)
