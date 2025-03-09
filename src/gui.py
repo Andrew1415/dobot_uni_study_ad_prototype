@@ -6,11 +6,17 @@ from PIL import Image, ImageTk
 import random
 import logging
 
-from .communication import CANDY1, CANDY2, request_prize, RESPONSE_SUCCESS, RESPONSE_TIMEOUT
+from .communication import CAMERA_CAPTURE, PICKUP_CANDY, request_prize, send_candy_robot_command, send_leaflet_robot_command, RESPONSE_SUCCESS, RESPONSE_TIMEOUT
 from .question_bank import next_question, categories
 import threading
 
 COUNTDOWN_STEP = 1500
+
+candy1_img = Image.open("img/candy1.png")
+CANDY1 = candy1_img
+
+candy2_img = Image.open("img/candy2.png")
+CANDY2 = candy2_img
 
 def clear_frame(frame):
     for widget in frame.winfo_children():
@@ -49,11 +55,14 @@ def view_answer_question(frame, category):
 def view_take_candy(frame, candy, category):
     clear_frame(frame)
 
-    text_label = tk.Label(frame, text="Pasiimkite saldaini ir kortele 😄", font=("Rando", 25))
+    text_label = tk.Label(frame, text="Pasiimkite saldainį ir kortelę 😄", font=("Rando", 25))
     text_label.pack(pady=20)
 
-    countdown_label = tk.Label(frame, font=("Rando", 25), text="Atsargiai geras robotas, bet turi silpnus nervus")
+    countdown_label = tk.Label(frame, font=("Rando", 25), text="Atsargiai! Geri robotai, bet turi silpnus nervus.")
     countdown_label.pack()
+
+
+
 
     # counting_task = None
 
@@ -137,11 +146,10 @@ def load_logos():
     fondas_img = ImageTk.PhotoImage(fondas_img)
 
     # Candy logos
-    candy1_img = Image.open("img/candy1.png")
     candy1_img = candy1_img.resize((250, 250))
     candy1_img = ImageTk.PhotoImage(candy1_img)
 
-    candy2_img = Image.open("img/candy2.png")
+
     candy2_img = candy2_img.resize((250, 250))
     candy2_img = ImageTk.PhotoImage(candy2_img)
 

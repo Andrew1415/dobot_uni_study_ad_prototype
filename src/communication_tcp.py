@@ -70,9 +70,15 @@ def send_robot_command(robot_socket: socket.socket, ip: str, port: int, command:
 
     return False
 
-def send_candy_robot_command(x: float, y: float, z: float, r: float, todo: int) -> bool:
+def send_candy_robot_command(todo: int, x: float = None, y: float = None, z: float = None, r: float = None) -> bool:
     """Sends a movement command to the candy robot."""
-    command = f"{x},{y},{z},{r},{todo}"
+    if todo == CAMERA_CAPTURE:
+        command = f"{todo}"  # Only send the todo action
+    elif todo == PICKUP_CANDY and None not in (x, y, z, r):
+        command = f"{todo},{x},{y},{z},{r}"  # Send full movement command
+    else:
+        logging.error("Invalid command: PICKUP_CANDY requires valid x, y, z, r coordinates!")
+        return False
     return send_robot_command(_CANDY_SOCKET, IP_CANDY_ROBOT, PORT_CANDY_ROBOT, command)
 
 
@@ -83,7 +89,14 @@ def send_leaflet_robot_command(category: str) -> bool:
 
 
 
-def request_prize(x: float, y: float, z: float, r: float, todo: int, category: str, ready_callback: Callable[[int], None]):
+def request_prize(todo: int, category: str, ready_callback: Callable[[int], None], x: float = None, y: float = None, z: float = None, r: float = None):
+    """
+    Handles both candy robot movement and leaflet robot request in separate threads.
+
+    - If `todo == CAMERA_CAPTURE (0)`, only that command is sent to the candy robot.
+    - If `todo == PICKUP_CANDY (1)`, coordinates are required and sent along with the action.
+    - The leaflet robot still functions as before.
+    """
     if _EXECUTING_EVENT.is_set():
         logging.warning("Current candy request has not been finished, ignoring request!")
         return
