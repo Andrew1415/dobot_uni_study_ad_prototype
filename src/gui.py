@@ -8,6 +8,7 @@ import logging
 
 from .communication import CANDY1, CANDY2, request_prize, RESPONSE_SUCCESS, RESPONSE_TIMEOUT
 from .question_bank import next_question, categories
+import threading
 
 COUNTDOWN_STEP = 1500
 
@@ -36,47 +37,47 @@ def view_answer_question(frame, category):
 
     def process_answer(answer):
         if answer == question_data["correct_answer"]:
-            view_pick_candy(frame)
+            view_pick_candy(frame, category)
         else:
             view_incorrect_answer(frame, redirect_func=view_pick_quiz_category)
 
     for answer in answers:
         answer_button = tk.Button(frame, command=lambda answer=answer: process_answer(answer),
-                                  text=answer, font=("Rando", 25), width=100, height=2, borderwidth=1, relief="solid")
+                                  text=answer, font=("Rando", 15), width=100, height=2, borderwidth=1, relief="solid")
         answer_button.pack(pady=5)
 
-def view_take_candy(frame, candy):
+def view_take_candy(frame, candy, category):
     clear_frame(frame)
 
-    text_label = tk.Label(frame, text="Gaudykite saldainį!", font=("Rando", 25))
+    text_label = tk.Label(frame, text="Pasiimkite saldaini ir kortele 😄", font=("Rando", 25))
     text_label.pack(pady=20)
 
-    countdown_label = tk.Label(frame, font=("Rando", 25))
+    countdown_label = tk.Label(frame, font=("Rando", 25), text="Atsargiai geras robotas, bet turi silpnus nervus")
     countdown_label.pack()
 
-    counting_task = None
+    # counting_task = None
 
     def after_given_prize(response):
-        nonlocal counting_task
+        # nonlocal counting_task
 
-        # Cancel counting task
-        if counting_task is not None:
-            frame.after_cancel(counting_task)
-            counting_task = None
+        # # Cancel counting task
+        # if counting_task is not None:
+        #     frame.after_cancel(counting_task)
+        #     counting_task = None
 
         view_pick_quiz_category(frame)
 
-    def countdown(count):
-        nonlocal counting_task
-        countdown_label['text'] = count
+    # def countdown(count):
+    #     nonlocal counting_task
+    #     countdown_label['text'] = count
 
-        if count > 1:
-            counting_task = frame.after(COUNTDOWN_STEP, countdown, count-1)
+    #     if count > 1:
+    #         counting_task = frame.after(COUNTDOWN_STEP, countdown, count-1)
 
-    request_prize(candy, after_given_prize)
-    countdown(3)
+    threading.Thread(target=request_prize, args=(candy, category, after_given_prize), daemon=True).start()
+    # countdown(3)
 
-def view_pick_candy(frame):
+def view_pick_candy(frame, category):
     clear_frame(frame)
 
     answer_label = tk.Label(frame, text="Sveikiname! Atsakėte teisingai.", font=("Rando", 30))
@@ -85,11 +86,11 @@ def view_pick_candy(frame):
     question_label = tk.Label(frame, text="Kokio saldainio norite?", font=("Rando", 30))
     question_label.pack(pady=20)
 
-    candy1_button = tk.Button(frame, command=lambda: view_take_candy(frame, CANDY1), 
+    candy1_button = tk.Button(frame, command=lambda: view_take_candy(frame, CANDY1, category), 
                                width=250, height=250, image=candy1_img, borderwidth=0, relief="solid")
     candy1_button.pack(side=tk.LEFT, padx=10)
 
-    candy2_button = tk.Button(frame, command=lambda: view_take_candy(frame, CANDY2), 
+    candy2_button = tk.Button(frame, command=lambda: view_take_candy(frame, CANDY2, category), 
                                width=250, height=250, image=candy2_img, borderwidth=0, relief="solid")
     candy2_button.pack(side=tk.RIGHT, padx=10)
 

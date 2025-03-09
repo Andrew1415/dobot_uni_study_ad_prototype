@@ -1,0 +1,34 @@
+{
+     "Informatics": [
+        {"question": "What does 'HTTP' stand for?", "correct_answer": "HyperText Transfer Protocol", "incorrect_answers": ["HyperText Transmission Protocol", "HyperTool Transfer Protocol"]},
+        {"question": "What is the main function of a CPU?", "correct_answer": "Processing instructions", "incorrect_answers": ["Storing data", "Displaying output"]},
+        {"question": "Which of the following is an example of an operating system?", "correct_answer": "Linux", "incorrect_answers": ["HTML", "Oracle"]},
+        {"question": "In binary code, how is the number 5 represented?", "correct_answer": "101", "incorrect_answers": ["110", "100"]},
+        {"question": "What is the purpose of RAM in a computer?", "correct_answer": "Temporary data storage", "incorrect_answers": ["Permanent data storage", "Data processing"]},
+        {"question": "Which programming language is often used for web development?", "correct_answer": "JavaScript", "incorrect_answers": ["Python", "C++"]},
+        {"question": "What does SQL stand for?", "correct_answer": "Structured Query Language", "incorrect_answers": ["Simple Query Language", "System Query Language"]},
+        {"question": "Which device is used to connect computers in a network?", "correct_answer": "Router", "incorrect_answers": ["Processor", "Monitor"]},
+        {"question": "What is the primary purpose of a database?", "correct_answer": "To store and manage data", "incorrect_answers": ["To process instructions", "To create animations"]},
+        {"question": "What is the smallest unit of data in a computer?", "correct_answer": "Bit", "incorrect_answers": ["Byte", "Kilobyte"]}
+    ],
+     "IT Engineering": [
+        {"question": "Which is the key component of computer networks?", "correct_answer": "Switch", "incorrect_answers": ["CPU", "Monitor"]},
+        {"question": "What is the main function of an IP address?", "correct_answer": "Identifying devices on a network", "incorrect_answers": ["Storing data", "Encrypting files"]},
+        {"question": "Which is the primary software used for designing circuits?", "correct_answer": "CAD (Computer-Aided Design)", "incorrect_answers": ["ERP", "CMS"]},
+        {"question": "What does 'IoT' stand for in engineering?", "correct_answer": "Internet of Things", "incorrect_answers": ["Information of Technology", "Interface of Technology"]},
+        {"question": "What is the primary function of an embedded system?", "correct_answer": "Perform specific tasks within a system", "incorrect_answers": ["Provide general computing", "Manage large databases"]},
+        {"question": "What does 'API' stand for?", "correct_answer": "Application Programming Interface", "incorrect_answers": ["Application Process Integration", "Advanced Protocol Interface"]},
+        {"question": "What is the purpose of a compiler?", "correct_answer": "Converting code into machine language", "incorrect_answers": ["Running programs", "Debugging errors"]},
+        {"question": "Which type of testing ensures a system meets technical requirements?", "correct_answer": "System testing", "incorrect_answers": ["Integration testing", "Unit testing"]}
+    ],
+    "Klaipėdos\nUniversitetas": [
+        {"question": "Kiek fakultetų turi Klaipėdos Universitetas?", "correct_answer": "3", "incorrect_answers": ["2", "5"]},
+        {"question": "Kiek laboratorijų turi KU informatikos inžinerijos studijų programa?", "correct_answer": "4", "incorrect_answers": ["2", "3"]},
+        {"question": "Kiek Klaipėdos Universitetui metų?", "correct_answer": "33", "incorrect_answers": ["29", "38"]},
+        {"question": "Kada Klaipėdos Universitetas buvo įkurtas?", "correct_answer": "1991", "incorrect_answers": ["2011", "1945"]},
+        {"question": "Kurią iš specialybių siūlo Klaipėdos Universitetas?", "correct_answer": "IT", "incorrect_answers": ["Meno istorija", "Geodezija"]},
+        {"question": "Kiek apytiksliai yra KU absolventų", "correct_answer": "40000", "incorrect_answers": ["20000", "80000"]},
+        {"question": "Kiek institutų turi Klaipėdos Universitetas?", "correct_answer": "2", "incorrect_answers": ["3", "4"]},
+        {"question": "Kiek informatikos mokslo specialybių turi KU?", "correct_answer": "2", "incorrect_answers": ["3", "4"]}
+    ]
+}

@@ -1,8 +1,11 @@
 import json
+import os
+import logging
 
 QUESTIONS_FILE = "questions.json"
+STATISTICS_FILE = "statistics.json"
 
-def read_categories(file_name):
+def read_categories(file_name) -> dict:
     with open(file_name) as f:
         return json.load(f)
 
@@ -28,3 +31,17 @@ def next_question(category):
         questions_index[category] = 0
 
     return question
+
+def update_statistics(category):
+    if os.path.exists(STATISTICS_FILE):
+        with open(STATISTICS_FILE, "r") as f:
+            statistics = json.load(f)
+    else:
+        statistics = {category: 0 for category in categories.keys()}
+    
+    statistics[category] += 1
+    logging.info(f'Answered category {category} {statistics[category]} times')
+    
+    
+    with open(STATISTICS_FILE, "w") as f:
+        json.dump(statistics, f, indent=4)
