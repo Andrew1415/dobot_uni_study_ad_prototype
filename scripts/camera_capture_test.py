@@ -42,12 +42,14 @@ def capture_image(camera):
     camera.Close()
     return image
 
-def pattern_recognition(template, scene):
+def pattern_recognition(template, scene, match_ratio_threshold=0.50):
     """
     Perform pattern recognition to find the template in the scene.
-    Uses ORB to detect keypoints and BFMatcher to match descriptors.
+    Uses ORB to detect keypoints and BFMatcher with Lowe's ratio test.
+    The function checks if at least `match_ratio_threshold` (75% by default)
+    of the template's keypoints have good matches.
     Returns the transformed corners (bounding box), rotation angle,
-    and the list of good matches.
+    and the list of good matches if sufficient matches are found.
     """
     # Initialize ORB detector.
     orb = cv2.ORB_create()
@@ -56,15 +58,23 @@ def pattern_recognition(template, scene):
     kp1, des1 = orb.detectAndCompute(template, None)
     kp2, des2 = orb.detectAndCompute(scene, None)
 
-    # Create a brute-force matcher using Hamming distance.
-    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-    matches = bf.match(des1, des2)
-    # Sort matches based on distance (best matches first).
-    matches = sorted(matches, key=lambda x: x.distance)
+    if des1 is None or des2 is None:
+        return None, None, []
 
-    # Use only the top 15% of matches as good matches.
-    num_good_matches = max(4, int(len(matches) * 0.15))
-    good_matches = matches[:num_good_matches]
+    # Use BFMatcher with knnMatch for Lowe's ratio test.
+    bf = cv2.BFMatcher(cv2.NORM_HAMMING)
+    raw_matches = bf.knnMatch(des1, des2, k=2)
+    
+    good_matches = []
+    for m, n in raw_matches:
+        # Lowe's ratio test: here we use 0.75 (can be adjusted if needed)
+        if m.distance < 0.95 * n.distance:
+            good_matches.append(m)
+
+    # Check if at least 75% of the template's keypoints have been matched.
+    if len(kp1) > 0 and len(good_matches) < match_ratio_threshold * len(kp1):
+        print(f"Insufficient pattern recognition: only {len(good_matches)}/{len(kp1)} keypoints matched.")
+        return None, None, good_matches
 
     if len(good_matches) >= 4:
         # Extract location of good matches.
@@ -78,7 +88,7 @@ def pattern_recognition(template, scene):
         # Transform the template corners to scene coordinates.
         dst = cv2.perspectiveTransform(pts, M)
 
-        # Compute rotation angle: using the vector from the first to second point.
+        # Compute rotation angle using the vector from the first to second point.
         pt1 = dst[0][0]
         pt2 = dst[1][0]
         angle = np.degrees(np.arctan2(pt2[1] - pt1[1], pt2[0] - pt1[0]))
@@ -113,9 +123,11 @@ def main():
     if template is None:
         print(f"Template image not found at {template_path}")
         return
+    # Convert template to grayscale if your captured image is also grayscale
+    template_gray = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
 
     # Run pattern recognition.
-    bbox, angle, good_matches = pattern_recognition(template, image)
+    bbox, angle, good_matches = pattern_recognition(template_gray, image)
     output = image.copy()
 
     if bbox is not None:
@@ -136,4 +148,5 @@ def main():
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    main()
+    while True:
+        main()
