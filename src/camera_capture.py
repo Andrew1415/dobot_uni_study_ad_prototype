@@ -48,12 +48,15 @@ def capture_img(camera_serial: str):
         return None
 
 
-def find_candy():
-    """
-    Placeholder function for finding candy coordinates.
+def find_candy(img, template_img):
+    
+    method = cv2.TM_SQDIFF_NORMED
 
-    :return: String with coordinates "x,y,z,r"
-    """
+    template = template_img
+    h, w = template.shape
+
+    
+
     # You'll add the real implementation later
     return "10.0,15.2,5.5,0.0"
 
