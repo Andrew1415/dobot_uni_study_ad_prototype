@@ -37,7 +37,7 @@ for x in range(100):
         # return
     camera.Close()
     img = cv2.resize(scene_img, (0, 0), fx=0.5, fy=0.5)
-    template = cv2.resize(cv2.imread('./img/candy_y4.png', 0), (0, 0), fx=0.5, fy=0.5)
+    template = cv2.resize(cv2.imread('./img/candy_r2.png', 0), (0, 0), fx=0.5, fy=0.5)
     w, h = template.shape[1], template.shape[0]
 
     methods = [cv2.TM_SQDIFF_NORMED]
@@ -49,7 +49,7 @@ for x in range(100):
 
         result = cv2.matchTemplate(img2, template, method)
         min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
-        threshold = 0.15
+        threshold = 0.20
         cv2.imshow('frame', img)
         if min_val < threshold:
             top_left = min_loc
@@ -117,7 +117,7 @@ for x in range(100):
 
 #     # Resize the scene image and load the template
 #     img = cv2.resize(scene_img, (0, 0), fx=0.5, fy=0.5)
-#     template = cv2.resize(cv2.imread('./img/candy_y4.png', 0), (0, 0), fx=0.5, fy=0.5)
+#     template = cv2.resize(cv2.imread('./img/candy_r4.png', 0), (0, 0), fx=0.5, fy=0.5)
 #     w, h = template.shape[1], template.shape[0]
 
 #     methods = [cv2.TM_SQDIFF_NORMED]
@@ -126,7 +126,7 @@ for x in range(100):
 #         img2 = img.copy()
 #         result = cv2.matchTemplate(img2, template, method)
 #         min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
-#         threshold = 0.18
+#         threshold = 0.20
 #         cv2.imshow('frame', img)
 
 #         if min_val < threshold:
