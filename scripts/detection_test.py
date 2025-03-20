@@ -64,6 +64,7 @@
 
 import cv2
 import numpy as np
+from pypylon import pylon 
 
 # Function to detect the color
 def detect_color(image, color):
@@ -88,7 +89,7 @@ def detect_color(image, color):
     return mask
 
 # Function to analyze the grid with at least 70% coverage threshold
-def analyze_grid(mask, rows=4, cols=6, threshold=0.2):
+def analyze_grid(mask, rows=4, cols=6, threshold=0.15):
     height, width = mask.shape
     cell_h, cell_w = height // rows, width // cols
 
@@ -107,7 +108,41 @@ def analyze_grid(mask, rows=4, cols=6, threshold=0.2):
     return detected_cells
 
 # Load image
-image = cv2.resize(cv2.imread('./img/Image__2025-03-17__11-57-13.png'), (0, 0), fx=0.5, fy=0.5)
+# image = cv2.resize(cv2.imread('./img/Image__2025-03-17__11-57-13.png'), (0, 0), fx=0.5, fy=0.5)
+camera_serial = '23984475'  # <-- Update to your camera's serial
+tl_factory = pylon.TlFactory.GetInstance()
+devices = tl_factory.EnumerateDevices()
+selected_device = None
+for device in devices:
+    if device.GetSerialNumber() == camera_serial:
+        selected_device = device
+        break
+
+if selected_device is None:
+    print(f"Camera with serial {camera_serial} not found.")
+    # return
+
+    # Create and open the camera
+camera = pylon.InstantCamera(tl_factory.CreateDevice(selected_device))
+camera.Open()
+if "BGR8" in camera.PixelFormat.GetSymbolics():
+    camera.PixelFormat.SetValue("BGR8")
+
+        # Start grabbing
+camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
+grab_result = camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
+
+if grab_result.GrabSucceeded():
+    # Convert to a NumPy array
+    scene_img = grab_result.Array
+    print("Scene image captured successfully.")
+else:
+    print("Failed to grab image.")
+    camera.Close()
+    # return
+camera.Close()
+image_1 = scene_img[255:2007, 252:2901]
+image = cv2.resize(image_1, (0, 0), fx=0.5, fy=0.5)
 
 color_to_detect = "yellow"  # Change to "yellow" if needed
 mask = detect_color(image, color_to_detect)
