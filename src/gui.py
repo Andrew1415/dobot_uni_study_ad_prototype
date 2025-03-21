@@ -6,7 +6,9 @@ from PIL import Image, ImageTk
 import random
 import logging
 
-from .communication import request_prize, send_candy_robot_command, send_leaflet_robot_command, RESPONSE_SUCCESS, RESPONSE_TIMEOUT
+from .communication import request_prize
+# send_candy_robot_command,
+# send_leaflet_robot_command, RESPONSE_SUCCESS, RESPONSE_TIMEOUT
 from .question_bank import next_question, categories
 from .camera_capture import find_candy
 import threading
@@ -19,27 +21,35 @@ CANDY1 = candy1_img
 candy2_img = Image.open("img/candy2.png")
 CANDY2 = candy2_img
 
+
 def clear_frame(frame):
     for widget in frame.winfo_children():
         widget.destroy()
-    
+
+
 def view_incorrect_answer(frame, redirect_func):
     clear_frame(frame)
 
-    incorrect_label = tk.Label(frame, text="Atsakymas neteisingas. Bandykite dar kartą.", font=("Rando", 30))
+    incorrect_label = tk.Label(frame,
+                               text="Atsakymas neteisingas. "
+                               "Bandykite dar kartą.",
+                               font=("Rando", 30))
     incorrect_label.pack(pady=20)
 
     frame.after(2000, lambda: redirect_func(frame))
+
 
 def view_answer_question(frame, category):
     clear_frame(frame)
 
     question_data = next_question(category)
 
-    question_label = tk.Label(frame, text=question_data["question"], font=("Rando", 20))
+    question_label = tk.Label(frame, text=question_data["question"],
+                              font=("Rando", 20))
     question_label.pack(pady=20)
 
-    answers = [question_data["correct_answer"]] + question_data["incorrect_answers"]
+    answers = [question_data[""
+               "correct_answer"]] + question_data["incorrect_answers"]
     random.shuffle(answers)
 
     def process_answer(answer):
@@ -49,21 +59,44 @@ def view_answer_question(frame, category):
             view_incorrect_answer(frame, redirect_func=view_pick_quiz_category)
 
     for answer in answers:
-        answer_button = tk.Button(frame, command=lambda answer=answer: process_answer(answer),
-                                  text=answer, font=("Rando", 15), width=100, height=2, borderwidth=1, relief="solid")
+        answer_button = tk.Button(frame, command=lambda answer=answer:
+                                  process_answer(answer),
+                                  text=answer, font=("Rando", 15), width=100,
+                                  height=2, borderwidth=1, relief="solid")
         answer_button.pack(pady=5)
+
 
 def view_take_candy(frame, candy, category):
     clear_frame(frame)
 
-    text_label = tk.Label(frame, text="Pasiimkite saldainį ir kortelę 😄", font=("Rando", 25))
+    text_label = tk.Label(frame, text="Pasiimkite saldainį ir kortelę 😄",
+                          font=("Rando", 25))
     text_label.pack(pady=20)
 
-    countdown_label = tk.Label(frame, font=("Rando", 25), text="Atsargiai! Geri robotai, bet turi silpnus nervus.")
+    countdown_label = tk.Label(frame, font=("Rando", 25),
+                               text="Atsargiai!"
+                               "Geri robotai, bet turi silpnus nervus.")
     countdown_label.pack()
 
     best_cell = find_candy(candy)
-    place = f"{best_cell[0]},{best_cell[1]}" 
+
+    if candy == 0:
+        candy_str = "Raudoni"
+    elif candy == 1:
+        candy_str = "Geltoni"
+
+    def no_candy():
+        result = messagebox.askquestion("Nebėra saldainiu. "
+                                        "\n Reikia papildyti ",
+                                        {candy_str}, " saldainius.")
+        if result == "yes":
+
+            return find_candy(candy)
+
+    if best_cell is None:
+        best_cell = no_candy()
+
+    place = f"{best_cell[0]},{best_cell[1]}"
 
     # counting_task = None
 
@@ -83,51 +116,73 @@ def view_take_candy(frame, candy, category):
 
     #     if count > 1:
     #         counting_task = frame.after(COUNTDOWN_STEP, countdown, count-1)
+    print(place)
 
-    threading.Thread(target=request_prize, args=(place, category, after_given_prize), daemon=True).start()
+    threading.Thread(target=request_prize,
+                     args=(place, category, after_given_prize),
+                     daemon=True).start()
     # countdown(3)
+
 
 def view_pick_candy(frame, category):
     clear_frame(frame)
 
-    answer_label = tk.Label(frame, text="Sveikiname! Atsakėte teisingai.", font=("Rando", 30))
+    answer_label = tk.Label(frame, text="Sveikiname! Atsakėte teisingai.",
+                            font=("Rando", 30))
     answer_label.pack(pady=20)
 
-    question_label = tk.Label(frame, text="Kokio saldainio norite?", font=("Rando", 30))
+    question_label = tk.Label(frame, text="Kokio saldainio norite?",
+                              font=("Rando", 30))
     question_label.pack(pady=20)
 
-    candy1_button = tk.Button(frame, command=lambda: view_take_candy(frame, CANDY1, category), 
-                               width=250, height=250, image=candy1_img, borderwidth=0, relief="solid")
+    candy1_button = tk.Button(frame, command=lambda: view_take_candy(frame,
+                                                                     CANDY1,
+                                                                     category),
+                              width=250, height=250, image=candy1_img,
+                              borderwidth=0, relief="solid")
     candy1_button.pack(side=tk.LEFT, padx=10)
 
-    candy2_button = tk.Button(frame, command=lambda: view_take_candy(frame, CANDY2, category), 
-                               width=250, height=250, image=candy2_img, borderwidth=0, relief="solid")
+    candy2_button = tk.Button(frame, command=lambda: view_take_candy(frame,
+                                                                     CANDY2,
+                                                                     category),
+                              width=250, height=250, image=candy2_img,
+                              borderwidth=0, relief="solid")
     candy2_button.pack(side=tk.RIGHT, padx=10)
+
 
 def view_pick_quiz_category(frame):
     clear_frame(frame)
 
-    category_label = tk.Label(frame, text="Pasirinkite kategoriją", font=("Rando", 25))
+    category_label = tk.Label(frame, text="Pasirinkite kategoriją",
+                              font=("Rando", 50))
     category_label.pack(pady=2)
-    
     category_frame = tk.Frame(frame)
     category_frame.pack()
 
     row, col = 0, 0
     for category in categories.keys():
-        category_button = tk.Button(category_frame, command=lambda category=category: view_answer_question(frame, category), 
-                                    text=category, font=("Rando", 15), width=25, height=2, borderwidth=1, relief="solid")
+        category_button = tk.Button(category_frame,
+                                    command=lambda
+                                    category=category:
+                                    view_answer_question(frame, category),
+                                    text=category, font=("Rando", 30),
+                                    width=30, height=2, borderwidth=1,
+                                    relief="solid")
         category_button.grid(row=row, column=col, padx=5, pady=5)
-        
+
         col += 1
         if col > 1:  # Two columns
             col = 0
             row += 1
 
-    #for category in categories.keys():
-     #   category_button = tk.Button(frame, command=lambda category=category: view_answer_question(frame, category), 
-     #                               text=category, font=("Rando", 25), width=15, height=2, borderwidth=0, relief="solid")
-     #   category_button.pack(pady=10)
+    # for category in categories.keys():
+    #   category_button = tk.Button(frame, command=lambda category=category:
+    # view_answer_question(frame, category),
+    #                               text=category, font=("Rando", 25),
+    # width=15,
+    # height=2, borderwidth=0, relief="solid")
+    #   category_button.pack(pady=10)
+
 
 # Loads used images and set up their sizes
 def load_logos():
@@ -135,24 +190,24 @@ def load_logos():
 
     # University logos
     ku_img = Image.open("img/ku.png")
-    ku_img = ku_img.resize((188, 50))
+    ku_img = ku_img.resize((385, 100))
     ku_img = ImageTk.PhotoImage(ku_img)
 
     conexus_img = Image.open("img/conexus.png")
-    conexus_img = conexus_img.resize((120, 50))
+    conexus_img = conexus_img.resize((302, 100))
     conexus_img = ImageTk.PhotoImage(conexus_img)
 
     fondas_img = Image.open("img/fondas.png")
-    fondas_img = fondas_img.resize((140, 45))
+    fondas_img = fondas_img.resize((322, 100))
     fondas_img = ImageTk.PhotoImage(fondas_img)
 
     # Candy logos
     candy1_img = candy1_img.resize((250, 250))
     candy1_img = ImageTk.PhotoImage(candy1_img)
 
-
     candy2_img = candy2_img.resize((250, 250))
     candy2_img = ImageTk.PhotoImage(candy2_img)
+
 
 def setup_window():
     logging.info("Creating window...")
@@ -174,14 +229,17 @@ def setup_window():
     frame_header.pack(expand=True)
 
     # Display logos in the header
-    conexus_logo = tk.Label(frame_header, height=120, image=conexus_img, borderwidth=0, relief="solid")
-    conexus_logo.grid(row = 0, column = 0, padx=1)
+    conexus_logo = tk.Label(frame_header, height=360, image=conexus_img,
+                            borderwidth=0, relief="solid")
+    conexus_logo.grid(row=0, column=0, padx=1)
 
-    ku_logo = tk.Label(frame_header, height=120, image=ku_img, borderwidth=0, relief="solid")
-    ku_logo.grid(row = 0, column = 1, padx=1)
+    ku_logo = tk.Label(frame_header, height=360, image=ku_img,
+                       borderwidth=0, relief="solid")
+    ku_logo.grid(row=0, column=1, padx=1)
 
-    fondas_logo = tk.Label(frame_header, height=120, image=fondas_img, borderwidth=0, relief="solid")
-    fondas_logo.grid(row = 0, column = 2, padx=1)
+    fondas_logo = tk.Label(frame_header, height=360, image=fondas_img,
+                           borderwidth=0, relief="solid")
+    fondas_logo.grid(row=0, column=2, padx=1)
 
     def on_exit():
         result = messagebox.askquestion("Exit", "Ar tikrai norite išeiti?")
@@ -190,7 +248,8 @@ def setup_window():
             root.destroy()
 
     # Display exit button
-    exit_button = tk.Button(root, text="X", font=("Rando", 20), command=on_exit, fg="white", bg="red")
+    exit_button = tk.Button(root, text="X", font=("Rando", 20),
+                            command=on_exit, fg="white", bg="red")
     exit_button.place(relx=1.0, x=-10, y=10, anchor="ne")
 
     # Setup main content of window
@@ -202,4 +261,3 @@ def setup_window():
 
     # Main loop
     root.mainloop()
-
