@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from pypylon import pylon 
 
-def detect_color(image, color):
+def detect_color(image, color) -> bool:
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
     if color == "red":
@@ -23,7 +23,7 @@ def detect_color(image, color):
 
     return mask
 
-def analyze_grid(mask, rows=4, cols=6, threshold=0.15):
+def analyze_grid(mask, rows=4, cols=6, threshold=0.15) -> bool:
     height, width = mask.shape
     cell_h, cell_w = height // rows, width // cols
 
@@ -40,7 +40,7 @@ def analyze_grid(mask, rows=4, cols=6, threshold=0.15):
 
     return detected_cells
 
-def take_image ():
+def take_image () -> bool:
     camera_serial = '23984475'
     tl_factory = pylon.TlFactory.GetInstance()
     devices = tl_factory.EnumerateDevices()
@@ -73,7 +73,7 @@ def take_image ():
 
     return image_1
 
-def find_candy (candy):
+def find_candy (candy) -> bool: 
     rows=4
     cols=6
     image = take_image()
@@ -103,4 +103,4 @@ def find_candy (candy):
 
     # the cell at row 3, column 5 yields box number 3 * 6 + 5 = 23.
     box_number = best_cell[0] * cols + best_cell[1]
-    return box_number
+    return best_cell

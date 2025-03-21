@@ -4,9 +4,6 @@ import logging
 from typing import Callable
 from .question_bank import categories, update_statistics
 
-CAMERA_CAPTURE: int = 0
-PICKUP_CANDY: int = 1
-
 RESPONSE_TIMEOUT: int = 0
 RESPONSE_SUCCESS: int = 1
 TCP_TIMEOUT_S: int = 30
@@ -70,14 +67,12 @@ def send_robot_command(robot_socket: socket.socket, ip: str, port: int, command:
 
     return False
 
-def send_candy_robot_command(todo: int, x: float = None, y: float = None, z: float = None, r: float = None) -> bool:
+def send_candy_robot_command(place: str = None) -> bool:
     """Sends a movement command to the candy robot."""
-    if todo == CAMERA_CAPTURE:
-        command = f"{todo}"  # Only send the todo action
-    elif todo == PICKUP_CANDY and None not in (x, y, z, r):
-        command = f"{todo},{x},{y},{z},{r}"  # Send full movement command
+    if place is not None:
+        command = f"{place}"  # send candy location
     else:
-        logging.error("Invalid command: PICKUP_CANDY requires valid x, y, z, r coordinates!")
+        logging.error("Invalid command: PICKUP_CANDY requires valid pick up location!")
         return False
     return send_robot_command(_CANDY_SOCKET, IP_CANDY_ROBOT, PORT_CANDY_ROBOT, command)
 
@@ -89,7 +84,7 @@ def send_leaflet_robot_command(category: str) -> bool:
 
 
 
-def request_prize(todo: int, category: str, ready_callback: Callable[[int], None], x: float = None, y: float = None, z: float = None, r: float = None):
+def request_prize(todo: int, category: str, ready_callback: Callable[[int], None], candy):
     """
     Handles both candy robot movement and leaflet robot request in separate threads.
 
@@ -111,7 +106,7 @@ def request_prize(todo: int, category: str, ready_callback: Callable[[int], None
 
         def run_candy():
             nonlocal candy_result
-            candy_result = send_candy_robot_command(x, y, z, r, todo)
+            candy_result = send_candy_robot_command(candy)
 
         def run_leaflet():
             nonlocal leaflet_result

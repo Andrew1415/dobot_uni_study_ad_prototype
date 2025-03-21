@@ -6,8 +6,9 @@ from PIL import Image, ImageTk
 import random
 import logging
 
-from .communication import CAMERA_CAPTURE, PICKUP_CANDY, request_prize, send_candy_robot_command, send_leaflet_robot_command, RESPONSE_SUCCESS, RESPONSE_TIMEOUT
+from .communication import request_prize, send_candy_robot_command, send_leaflet_robot_command, RESPONSE_SUCCESS, RESPONSE_TIMEOUT
 from .question_bank import next_question, categories
+from .camera_capture import find_candy
 import threading
 
 COUNTDOWN_STEP = 1500
@@ -61,8 +62,8 @@ def view_take_candy(frame, candy, category):
     countdown_label = tk.Label(frame, font=("Rando", 25), text="Atsargiai! Geri robotai, bet turi silpnus nervus.")
     countdown_label.pack()
 
-
-
+    best_cell = find_candy(candy)
+    place = f"{best_cell[0]},{best_cell[1]}" 
 
     # counting_task = None
 
@@ -83,7 +84,7 @@ def view_take_candy(frame, candy, category):
     #     if count > 1:
     #         counting_task = frame.after(COUNTDOWN_STEP, countdown, count-1)
 
-    threading.Thread(target=request_prize, args=(candy, category, after_given_prize), daemon=True).start()
+    threading.Thread(target=request_prize, args=(place, category, after_given_prize), daemon=True).start()
     # countdown(3)
 
 def view_pick_candy(frame, category):
