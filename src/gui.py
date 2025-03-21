@@ -131,7 +131,7 @@ def view_pick_candy(frame, category):
                             font=("Rando", 30))
     answer_label.pack(pady=20)
 
-    question_label = tk.Label(frame, text="Kokio saldainio norite?",
+    question_label = tk.Label(frame, text="Kokio saldainio norite??",
                               font=("Rando", 30))
     question_label.pack(pady=20)
 
