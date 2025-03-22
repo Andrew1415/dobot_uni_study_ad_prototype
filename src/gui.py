@@ -16,10 +16,10 @@ import threading
 COUNTDOWN_STEP = 1500
 
 candy1_img = Image.open("img/candy1.png")
-CANDY1 = candy1_img
+CANDY1 = 0
 
 candy2_img = Image.open("img/candy2.png")
-CANDY2 = candy2_img
+CANDY2 = 1
 
 
 def clear_frame(frame):
@@ -66,49 +66,18 @@ def view_answer_question(frame, category):
         answer_button.pack(pady=5)
 
 
-def view_take_candy(frame, candy, category):
+def view_take_candy(frame):
     clear_frame(frame)
 
     text_label = tk.Label(frame, text="Pasiimkite saldainį ir kortelę 😄",
                           font=("Rando", 25))
     text_label.pack(pady=20)
 
-    countdown_label = tk.Label(frame, font=("Rando", 25),
-                               text="Atsargiai!"
-                               "Geri robotai, bet turi silpnus nervus.")
-    countdown_label.pack()
-
-    best_cell = find_candy(candy)
-
-    if candy == 0:
-        candy_str = "Raudoni"
-    elif candy == 1:
-        candy_str = "Geltoni"
-
-    def no_candy():
-        result = messagebox.askquestion("Nebėra saldainiu. "
-                                        "\n Reikia papildyti ",
-                                        {candy_str}, " saldainius.")
-        if result == "yes":
-
-            return find_candy(candy)
-
-    if best_cell is None:
-        best_cell = no_candy()
-
-    place = f"{best_cell[0]},{best_cell[1]}"
-
-    # counting_task = None
-
-    def after_given_prize(response):
-        # nonlocal counting_task
-
-        # # Cancel counting task
-        # if counting_task is not None:
-        #     frame.after_cancel(counting_task)
-        #     counting_task = None
-
-        view_pick_quiz_category(frame)
+    finnish_button = tk.Button(frame, command=lambda: view_pick_quiz_category(frame),
+                               width=250, height=250, text="Grįšti į pradžią.",
+                               font=("Rando", 25),
+                               borderwidth=0, relief="solid")
+    finnish_button.pack(pady=20)
 
     # def countdown(count):
     #     nonlocal counting_task
@@ -116,12 +85,62 @@ def view_take_candy(frame, candy, category):
 
     #     if count > 1:
     #         counting_task = frame.after(COUNTDOWN_STEP, countdown, count-1)
-    print(place)
-
-    threading.Thread(target=request_prize,
-                     args=(place, category, after_given_prize),
-                     daemon=True).start()
     # countdown(3)
+
+
+def view_find_candy(frame, candy, category):
+    clear_frame(frame)
+
+    text_label = tk.Label(
+        frame,
+        text="Robotas ieško pasirinkto saldainio."
+             "\n Atsargiai!"
+             "\n Geri robotai, bet turi silpnus nervus.",
+        font=("Rando", 50)
+    )
+    text_label.pack(pady=20)
+
+    def no_candy(candy):
+        if candy == 0:
+            candy_str = "Geltoni"
+        elif candy == 1:
+            candy_str = "Raudoni"
+        else:
+            candy_str = "Nežinomi"
+        result = messagebox.askquestion(
+            "Nebėra saldainiu.",
+            f"\nReikia papildyti {candy_str} saldainius."
+        )
+
+        if result == "yes":
+            return
+        else:
+            no_candy()
+        # You can add further logic here based on the result if needed.
+
+    def check_for_candy():
+        best_cell = find_candy(candy)
+        if best_cell is not None:
+            # Candy found: continue with the rest of your logic.
+            place = f"{best_cell[0]},{best_cell[1]}"
+            print(place)
+
+            def after_given_prize(response):
+                view_take_candy(frame)
+
+            threading.Thread(
+                target=request_prize,
+                args=(place, category, after_given_prize),
+                daemon=True
+            ).start()
+        else:
+            # Candy not found: show the message box and
+            #  check again after a delay.
+            no_candy(candy)
+            frame.after(1000, check_for_candy)  # Check again in 1 second.
+
+    # Start the periodic check.
+    check_for_candy()
 
 
 def view_pick_candy(frame, category):
@@ -135,14 +154,14 @@ def view_pick_candy(frame, category):
                               font=("Rando", 30))
     question_label.pack(pady=20)
 
-    candy1_button = tk.Button(frame, command=lambda: view_take_candy(frame,
+    candy1_button = tk.Button(frame, command=lambda: view_find_candy(frame,
                                                                      CANDY1,
                                                                      category),
                               width=250, height=250, image=candy1_img,
                               borderwidth=0, relief="solid")
     candy1_button.pack(side=tk.LEFT, padx=10)
 
-    candy2_button = tk.Button(frame, command=lambda: view_take_candy(frame,
+    candy2_button = tk.Button(frame, command=lambda: view_find_candy(frame,
                                                                      CANDY2,
                                                                      category),
                               width=250, height=250, image=candy2_img,
@@ -219,7 +238,7 @@ def setup_window():
     root.attributes('-fullscreen', True)
 
     # For raspberry
-    root.attributes('-type', 'splash')
+    # root.attributes('-type', 'splash')
 
     # Load logos used in the application
     load_logos()

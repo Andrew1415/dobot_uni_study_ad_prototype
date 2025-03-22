@@ -84,7 +84,7 @@ def send_leaflet_robot_command(category: str) -> bool:
 
 
 
-def request_prize(todo: int, category: str, ready_callback: Callable[[int], None], candy):
+def request_prize(candy, category: str, ready_callback: Callable[[int], None]):
     """
     Handles both candy robot movement and leaflet robot request in separate threads.
 
