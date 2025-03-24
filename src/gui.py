@@ -294,7 +294,7 @@ def setup_window():
             root.destroy()
 
     # Display exit button
-    exit_button = tk.Button(root, text="!@#$%^&*()", font=("Rando", 20),
+    exit_button = tk.Button(root, text="—", font=("Rando", 20),
                             command=on_exit, fg="white", bg="#008080")
     exit_button.place(relx=1.0, x=-10, y=10, anchor="ne")
 
