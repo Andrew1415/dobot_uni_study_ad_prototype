@@ -95,9 +95,9 @@ def request_prize(candy, category: str, ready_callback: Callable[[int], None]):
     if _EXECUTING_EVENT.is_set():
         logging.warning("Current candy request has not been finished, ignoring request!")
         return
-    
+
     _EXECUTING_EVENT.set()
-    result = RESPONSE_TIMEOUT  
+    result = RESPONSE_TIMEOUT
 
     candy_result = False
     leaflet_result = False

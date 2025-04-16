@@ -85,7 +85,7 @@ camera.Close()
 image_1 = scene_img[315:2041, 159:2799]
 image = cv2.resize(image_1, (0, 0), fx=0.5, fy=0.5)
 
-color_to_detect = "yellow"  # Change to "yellow" if needed
+color_to_detect = "red"  # Change to "yellow" if needed
 mask = detect_color(image, color_to_detect)
 
 # Analyze grid with 70% threshold
@@ -98,6 +98,6 @@ for row, col in highlighted_cells:
     print(f"Row: {row}, Column: {col} (covered ≥ 70%)")
 
 # Show the detected mask
-cv2.imshow("Color Mask", image)
+cv2.imshow("Color Mask", mask)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
