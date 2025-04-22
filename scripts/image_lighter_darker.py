@@ -2,7 +2,7 @@ from PIL import Image, ImageEnhance
 import os
 
 # Path to the folder containing the images
-folder_path = './training'  # Replace with your folder path
+folder_path = './test_img'  # Replace with your folder path
 
 # Loop through all files in the folder
 for filename in os.listdir(folder_path):
@@ -12,10 +12,10 @@ for filename in os.listdir(folder_path):
 
         # Darken the image by 20%
         enhancer = ImageEnhance.Brightness(img)
-        darkened_img = enhancer.enhance(0.8)  # 0.8 is 20% darker
+        darkened_img = enhancer.enhance(0.6)  # 0.8 is 20% darker
 
         # Lighten the image by 20%
-        lightened_img = enhancer.enhance(1.2)  # 1.2 is 20% lighter
+        lightened_img = enhancer.enhance(1.4)  # 1.2 is 20% lighter
 
         # Save the darkened and lightened images
         darkened_img.save(os.path.join(folder_path, f"darkened_{filename}"))
