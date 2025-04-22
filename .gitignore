@@ -162,7 +162,7 @@ cython_debug/
 questions.json
 candy_r3_rotated/
 candy_y3_rotated/
-traiinig/
+training/
 test_yolo/
 test_img/
 models/

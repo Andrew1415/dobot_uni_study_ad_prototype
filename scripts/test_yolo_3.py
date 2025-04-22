@@ -93,7 +93,7 @@ import cv2
 from ultralytics import YOLO
 
 # Initialize the model (YOLOv8 by default)
-model = YOLO("./models/my_model.pt")  # Replace with your model path if necessary
+model = YOLO("./models/my_model_new1.pt")  # Replace with your model path if necessary
 
 # Set the folder where your images are stored
 image_folder = "./test_img"
