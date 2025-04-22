@@ -6,7 +6,7 @@ from ultralytics import YOLO
 model = YOLO("./models/my_model_new1.pt")  # Replace with your model path if necessary
 
 # Set the folder where your images are stored
-image_folder = "./img"
+image_folder = "./test_img"
 
 # Minimum confidence threshold
 min_confidence = 0.8
