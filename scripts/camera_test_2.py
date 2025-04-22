@@ -581,40 +581,45 @@ def main():
     # ----------------------------------------------------------------
     # 1. Connect to Basler Camera by Serial and Capture an Image
     # ----------------------------------------------------------------
-    camera_serial = '23984475'  # <-- Update to your camera's serial
-    tl_factory = pylon.TlFactory.GetInstance()
-    devices = tl_factory.EnumerateDevices()
+    # camera_serial = '23984475'  # <-- Update to your camera's serial
+    # tl_factory = pylon.TlFactory.GetInstance()
+    # devices = tl_factory.EnumerateDevices()
 
-    selected_device = None
-    for device in devices:
-        if device.GetSerialNumber() == camera_serial:
-            selected_device = device
-            break
+    # selected_device = None
+    # for device in devices:
+    #     if device.GetSerialNumber() == camera_serial:
+    #         selected_device = device
+    #         break
 
-    if selected_device is None:
-        print(f"Camera with serial {camera_serial} not found.")
-        return
+    # if selected_device is None:
+    #     print(f"Camera with serial {camera_serial} not found.")
+    #     return
 
-    # Create and open the camera
-    camera = pylon.InstantCamera(tl_factory.CreateDevice(selected_device))
-    camera.Open()
+    # # Create and open the camera
+    # camera = pylon.InstantCamera(tl_factory.CreateDevice(selected_device))
+    # camera.Open()
 
-    # Start grabbing
-    camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
-    grab_result = camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
+    # # Start grabbing
+    # camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
+    # grab_result = camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
 
-    if grab_result.GrabSucceeded():
-        # Convert to a NumPy array
-        scene_img = grab_result.Array
-        print("Scene image captured successfully.")
-    else:
-        print("Failed to grab image.")
-        camera.Close()
-        return
+    # if grab_result.GrabSucceeded():
+    #     # Convert to a NumPy array
+    #     scene_img = grab_result.Array
+    #     print("Scene image captured successfully.")
+    # else:
+    #     print("Failed to grab image.")
+    #     camera.Close()
+    #     return
 
-    grab_result.Release()
-    camera.StopGrabbing()
-    camera.Close()
+    # grab_result.Release()
+    # camera.StopGrabbing()
+    # camera.Close()
+
+    image_file_path = './img/test_img2.png'  # <-- Update this path
+
+# Open the image from file
+    scene_img = cv2.imread(image_file_path)
 
     # ----------------------------------------------------------------
     # 2. Load the Reference Image
@@ -661,7 +666,7 @@ def main():
     matches = sorted(matches, key=lambda x: x.distance)
 
     # Take top N matches (adjust as needed)
-    good_matches = matches[:200]
+    good_matches = matches[:2000]
 
     # Optional: visualize these top matches
     matched_img = cv2.drawMatches(

@@ -22,24 +22,29 @@ def connect_camera(serial_number):
     
     return camera
 
-def capture_image(camera):
-    """
-    Capture a single image from the camera.
-    """
-    camera.Open()
-    # Start grabbing one image with the latest image strategy.
-    camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
-    # Retrieve one image with a timeout.
-    result = camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
+def capture_image():
+    # """
+    # Capture a single image from the camera.
+    # """
+    # camera.Open()
+    # # Start grabbing one image with the latest image strategy.
+    # camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
+    # # Retrieve one image with a timeout.
+    # result = camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
     
-    if result.GrabSucceeded():
-        image = result.Array
-    else:
-        image = None
+    # if result.GrabSucceeded():
+    #     image = result.Array
+    # else:
+    #     image = None
 
-    result.Release()
-    camera.StopGrabbing()
-    camera.Close()
+    # result.Release()
+    # camera.StopGrabbing()
+    # camera.Close()
+
+    image_file_path = './img/test_img2.png'  # <-- Update this path
+
+# Open the image from file
+    image = cv2.imread(image_file_path)
     return image
 
 def pattern_recognition(template, scene, match_ratio_threshold=0.50):
@@ -93,14 +98,14 @@ def main():
     serial_number = args.serial_number
     template_path = args.template_path
 
-    try:
-        camera = connect_camera(serial_number)
-    except Exception as e:
-        print(e)
-        return
+    # try:
+    #     camera = connect_camera(serial_number)
+    # except Exception as e:
+    #     print(e)
+    #     return
 
     # Capture an image
-    image = capture_image(camera)
+    image = capture_image()
     if image is None:
         print("Failed to capture image.")
         return
@@ -112,7 +117,7 @@ def main():
     # ---- Extract the red channel ("red plane") from the image ----
     red_plane = image[:, :, 2]
 
-    cropped_red_plane_scene = red_plane[:, 591:2088]
+    cropped_red_plane_scene = red_plane
     
     # Optionally, if you want to keep the three-channel format for display or further processing:
     red_plane_color = cv2.merge([red_plane, red_plane, red_plane])

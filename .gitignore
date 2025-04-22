@@ -160,3 +160,9 @@ cython_debug/
 #.idea/
 
 questions.json
+candy_r3_rotated/
+candy_y3_rotated/
+traiinig/
+test_yolo/
+test_img/
+models/
