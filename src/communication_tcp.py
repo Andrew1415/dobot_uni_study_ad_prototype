@@ -2,18 +2,20 @@ import socket
 import threading
 import logging
 from typing import Callable
-from .question_bank import categories, update_statistics
+from question_bank import categories, update_statistics
 
 RESPONSE_TIMEOUT: int = 0
 RESPONSE_SUCCESS: int = 1
 TCP_TIMEOUT_S: int = 30
 
-IP_CANDY_ROBOT: str = "192.168.2.6"
+#IP_CANDY_ROBOT: str = "192.168.2.6"
+IP_CANDY_ROBOT: str = "192.168.1.238"
 PORT_CANDY_ROBOT: int = 6001
 _CANDY_SOCKET: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 _CANDY_SOCKET.settimeout(TCP_TIMEOUT_S)
 
-IP_LEAFLET_ROBOT: str = "192.168.2.7"
+#IP_LEAFLET_ROBOT: str = "192.168.2.7"
+IP_LEAFLET_ROBOT: str = "192.168.1.237"
 PORT_LEAFLET_ROBOT: int = 6001
 _LEAFLET_SOCKET: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 _LEAFLET_SOCKET.settimeout(TCP_TIMEOUT_S)
@@ -48,7 +50,6 @@ def close_communication():
     _LEAFLET_SOCKET.close()
 
 def send_robot_command(robot_socket: socket.socket, ip: str, port: int, command: str) -> bool:
-    """Sends a command to the specified robot and waits for a response."""
     logging.info(f"Sending TCP command to {ip}:{port} = {command}")
 
     try:
@@ -68,9 +69,8 @@ def send_robot_command(robot_socket: socket.socket, ip: str, port: int, command:
     return False
 
 def send_candy_robot_command(place: str = None) -> bool:
-    """Sends a movement command to the candy robot."""
     if place is not None:
-        command = f"{place}"  # send candy location
+        command = f"{place}"
     else:
         logging.error("Invalid command: PICKUP_CANDY requires valid pick up location!")
         return False
@@ -78,20 +78,12 @@ def send_candy_robot_command(place: str = None) -> bool:
 
 
 def send_leaflet_robot_command(category: str) -> bool:
-    """Sends a command to the leaflet robot to dispense a leaflet for the given category."""
     leaflet_index = int(list(categories.keys()).index(category))
     return send_robot_command(_LEAFLET_SOCKET, IP_LEAFLET_ROBOT, PORT_LEAFLET_ROBOT, str(leaflet_index))
 
 
 
 def request_prize(candy, category: str, ready_callback: Callable[[int], None]):
-    """
-    Handles both candy robot movement and leaflet robot request in separate threads.
-
-    - If `todo == CAMERA_CAPTURE (0)`, only that command is sent to the candy robot.
-    - If `todo == PICKUP_CANDY (1)`, coordinates are required and sent along with the action.
-    - The leaflet robot still functions as before.
-    """
     if _EXECUTING_EVENT.is_set():
         logging.warning("Current candy request has not been finished, ignoring request!")
         return
@@ -123,6 +115,48 @@ def request_prize(candy, category: str, ready_callback: Callable[[int], None]):
 
         result = RESPONSE_SUCCESS if candy_result and leaflet_result else RESPONSE_TIMEOUT
         update_statistics(category)
+    finally:
+        _EXECUTING_EVENT.clear()
+
+    ready_callback(result)
+
+
+
+def request_candy(candy: str, ready_callback: Callable[[int], None]) -> None:
+    """
+    Sends a candy-only request to the candy robot.
+    Calls ready_callback(RESPONSE_SUCCESS) if send_candy_robot_command succeeds,
+    otherwise ready_callback(RESPONSE_TIMEOUT).
+    """
+    if _EXECUTING_EVENT.is_set():
+        logging.warning("A robot request is already in progress, ignoring candy request!")
+        return
+
+    _EXECUTING_EVENT.set()
+    try:
+        success = send_candy_robot_command(candy)
+        result = RESPONSE_SUCCESS if success else RESPONSE_TIMEOUT
+    finally:
+        _EXECUTING_EVENT.clear()
+
+    ready_callback(result)
+
+
+def request_leaflet(category: str, ready_callback: Callable[[int], None]) -> None:
+    """
+    Sends a leaflet-only request to the leaflet robot.
+    Updates the statistics for the given category.
+    Calls ready_callback(RESPONSE_SUCCESS) if send_leaflet_robot_command succeeds,
+    otherwise ready_callback(RESPONSE_TIMEOUT).
+    """
+    if _EXECUTING_EVENT.is_set():
+        logging.warning("A robot request is already in progress, ignoring leaflet request!")
+        return
+
+    _EXECUTING_EVENT.set()
+    try:
+        success = send_leaflet_robot_command(category)
+        result = RESPONSE_SUCCESS if success else RESPONSE_TIMEOUT
     finally:
         _EXECUTING_EVENT.clear()
 

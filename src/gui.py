@@ -213,7 +213,7 @@ def view_pick_quiz_category(frame):
         category_button.grid(row=row, column=col, padx=5, pady=5)
 
         col += 1
-        if col > 1:  # Two columns
+        if col > 1:
             col = 0
             row += 1
 
@@ -305,5 +305,5 @@ def setup_window():
     # Display question frame first
     view_pick_quiz_category(frame_content)
 
-    # Main loop
+    # Main loop 
     root.mainloop()

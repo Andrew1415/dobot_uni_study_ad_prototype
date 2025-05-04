@@ -56,7 +56,6 @@ def take_image() -> bool:
         if device.GetSerialNumber() == camera_serial:
             selected_device = device
             break
-
     if selected_device is None:
         print(f"Camera with serial {camera_serial} not found.")
 
@@ -109,6 +108,4 @@ def find_candy(candy) -> bool:
     if best_cell[0] < 0 or best_cell[0] > 5:
         return None
 
-    # the cell at row 3, column 5 yields box number 3 * 6 + 5 = 23.
-    # box_number = best_cell[0] * cols + best_cell[1]
     return best_cell
