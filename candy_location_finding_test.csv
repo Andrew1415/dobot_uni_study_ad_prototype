@@ -1,4 +1,4 @@
-iteration,x,y,send_timestamp,response_timestamp,duration,success
+iteration,Category,send_timestamp,response_timestamp,duration,location,success
 1,Yellow,2025-05-05T07:15:25.766,2025-05-05T07:15:26.873,1.106568,"(1, 3)",True
 1,Red,2025-05-05T07:15:26.873,2025-05-05T07:15:27.944,1.07069,"(1, 4)",True
 2,Yellow,2025-05-05T07:15:27.944,2025-05-05T07:15:29.050,1.106788,"(1, 3)",True
