@@ -75,7 +75,7 @@ def take_image() -> bool:
         print("Failed to grab image.")
         camera.Close()
     camera.Close()
-    image_1 = scene_img[218:1984, 290:2919]
+    image_1 = scene_img[97:1865, 302:2916]
 
     return image_1
 

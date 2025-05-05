@@ -6,27 +6,27 @@ from pypylon import pylon
     # 1. Connect to Basler Camera by Serial and Capture an Image
     # ----------------------------------------------------------------
 for x in range(100):
-    # camera_serial = '23984475'  # <-- Update to your camera's serial
-    # tl_factory = pylon.TlFactory.GetInstance()
-    # devices = tl_factory.EnumerateDevices()
-    # selected_device = None
-    # for device in devices:
-    #     if device.GetSerialNumber() == camera_serial:
-    #         selected_device = device
-    #         break
+    camera_serial = '23984475'  # <-- Update to your camera's serial
+    tl_factory = pylon.TlFactory.GetInstance()
+    devices = tl_factory.EnumerateDevices()
+    selected_device = None
+    for device in devices:
+        if device.GetSerialNumber() == camera_serial:
+            selected_device = device
+            break
 
-    # if selected_device is None:
-    #     print(f"Camera with serial {camera_serial} not found.")
-    #     # return
+    if selected_device is None:
+        print(f"Camera with serial {camera_serial} not found.")
+        # return
 
-    #     # Create and open the camera
-    # camera = pylon.InstantCamera(tl_factory.CreateDevice(selected_device))
-    # camera.Open()
+        # Create and open the camera
+    camera = pylon.InstantCamera(tl_factory.CreateDevice(selected_device))
+    camera.Open()
 
-    #     # Start grabbing
-    # camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
-    # grab_result = camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
-    image_file_path = './img/test_img2.png'  # <-- Update this path
+        # Start grabbing
+    camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
+    grab_result = camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
+    # image_file_path = './img/test_img2.png'  # <-- Update this path
 
 # Open the image from file
     scene_img = cv2.imread(image_file_path)

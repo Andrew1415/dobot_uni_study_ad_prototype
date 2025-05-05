@@ -18,7 +18,7 @@ from communication_tcp import (
 )
 
 CSV_FILENAME = "candy_robot_communication_test.csv"
-ITERATIONS   = 1
+ITERATIONS   = 10
 X_MAX, Y_MAX = 3, 5
 
 

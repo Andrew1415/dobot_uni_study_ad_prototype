@@ -38,7 +38,7 @@ def test_candy_location():
         # 4) loops: each (x) for ITERATIONS times
         for iteration in range(1, ITERATIONS + 1):
             for x in range(0, X_MAX + 1):
-                cmd = f"{x}"
+                cmd = x
 
                 dt_send = datetime.now()
                 success = find_candy(cmd)   # blocks until done
