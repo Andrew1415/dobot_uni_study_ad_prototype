@@ -19,7 +19,7 @@ from communication_tcp import (
 from question_bank import categories
 
 CSV_FILENAME = "leaflete_robot_communication_test.csv"
-ITERATIONS   = 1
+ITERATIONS   = 15
 X_MAX = 8
 
 
