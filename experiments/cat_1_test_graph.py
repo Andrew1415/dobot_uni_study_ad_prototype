@@ -23,7 +23,7 @@ summary_df['x_y'] = summary_df['x'].astype(str) + '_' + summary_df['y'].astype(s
 
 plt.figure(figsize=(12, 6))
 plt.bar(summary_df['x_y'], summary_df['average_duration'], color='lightgreen')
-plt.xlabel('Pirmos kategorijos objektų lokacijos (eilutė_stulpelis)')
+plt.xlabel('Pirmos kategorijos objektų lokacijos (eilutė_stulpelis)\nkiekvienai lokacijai daryta 10 eksperimentų ir išvestas vidurkis')
 plt.ylabel('Vidutinis paėmimo ir padėjimo laikas, s')
 plt.title('Vidutinis paėmimo ir padėjimo pirmosios kategorijos objektų laikas')
 plt.xticks(rotation=90)
@@ -53,13 +53,14 @@ plt.show()
 sorted_df = summary_df.sort_values('average_duration')
 plt.figure(figsize=(12, 6))
 plt.plot(sorted_df['x_y'], sorted_df['average_duration'], marker='o', linestyle='-', color='salmon')
-plt.xlabel('Pirmos kategorijos objektų lokacijos (eilutė_stulpelis)')
+plt.xlabel('Pirmos kategorijos objektų lokacijos (eilutė_stulpelis)\nkiekvienai lokacijai daryta 10 eksperimentų ir išvestas vidurkis')
 plt.ylabel('Vidutinis užduoties atlikimo periodas, s')
 plt.title('Vidutinis paėmimo ir padėjimo pirmosios kategorijos objektų periodo kitimas nuo trumpiausio iki ilgiausio')
 plt.xticks(rotation=90)
 min_duration = summary_df['average_duration'].min() - 0.1
 max_duration = summary_df['average_duration'].max() + 0.1
 plt.ylim(min_duration, max_duration)
+plt.grid(which='major', linestyle='-', linewidth=0.75, alpha=0.7)
 plt.tight_layout()
 plt.show()
 
