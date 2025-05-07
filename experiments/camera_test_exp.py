@@ -15,7 +15,7 @@ ITERATIONS   = 100
 X_MAX = 1
 
 
-def test_candy_location():
+def test_cat_1_location():
     # 1) configure logging
     logging.basicConfig(
         level=logging.INFO,
@@ -79,4 +79,4 @@ def test_candy_location():
 
 
 if __name__ == "__main__":
-    test_candy_location()
+    test_cat_1_location()
