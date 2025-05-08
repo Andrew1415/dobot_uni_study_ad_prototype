@@ -21,9 +21,19 @@ summary_df = df.groupby('Category').agg(
 # Save to a new CSV
 summary_df.to_csv(output_csv, index=False)
 
-# Plot the graph
+# Define colors based on category name
+def get_color(category):
+    if 'Red' in category:
+        return '#FF4933'
+    else:
+        return '#D8A900'
+
+# Apply color mapping
+colors = summary_df['Category'].apply(get_color)
+
+# Plot the graph with custom colors
 plt.figure(figsize=(10,6))
-plt.bar(summary_df['Category'], summary_df['average_duration'], color='#FF4933')
+plt.bar(summary_df['Category'], summary_df['average_duration'], color=colors)
 plt.xlabel('Pirmos kategorijos objektai')
 plt.ylabel('Vidutinis objekto lokacijos radimo laikas, s')
 plt.title('Vidutinis pirmos kategorijos \n objektų lokacijos radimo laikas')
